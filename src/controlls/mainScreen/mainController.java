@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import obv.particle.ParticleInfoView;
 import obv.particle.ParticleView;
 import obv.particle.ParticlesContainer;
 
@@ -33,6 +34,12 @@ public class mainController extends Scene {
 		root.getChildren().add(particlesContainer);
 		
 		/*--------------*/
+		ParticleInfoView info = new ParticleInfoView(70, 100);
+		info.setNameTag("H");
+		info.setName("Hydrogen");
+		info.setMass(1.008f);
+		root.getChildren().add(info);
+		
 		GaussianBlur blur = new GaussianBlur(0);
 		particlesContainer.setEffect(blur);
 		setOnKeyPressed(new EventHandler<KeyEvent>(){
