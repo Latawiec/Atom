@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.effect.GaussianBlur;
@@ -34,11 +35,13 @@ public class mainController extends Scene {
 		root.getChildren().add(particlesContainer);
 		
 		/*--------------*/
-		ParticleInfoView info = new ParticleInfoView(70, 100);
+		ParticleInfoView info = new ParticleInfoView(60, 70);
+		info.setTranslateX(getWidth()/8);
+		info.setTranslateY(getHeight()/20);
 		info.setNameTag("H");
-		info.setName("Hydrogen");
+		info.setName("hydrogen");
 		info.setMass(1.008f);
-		root.getChildren().add(info);
+		particlesContainer.getChildren().add(info);
 		
 		GaussianBlur blur = new GaussianBlur(0);
 		particlesContainer.setEffect(blur);
