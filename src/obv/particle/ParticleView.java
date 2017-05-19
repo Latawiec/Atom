@@ -24,8 +24,6 @@ import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 
 public class ParticleView extends SubScene {
-	/*RotateTransition rotateIn = new RotateTransition(Duration.seconds(20), centerParticles);
-	RotateTransition rotateOut = new RotateTransition(Duration.seconds(20), outterParticles);*/
 	
 	Group entireParticle;
 	Group centerParticles;					//Nucleons
@@ -72,8 +70,6 @@ public class ParticleView extends SubScene {
 		entireParticle.setTranslateY(getWidth()/2);
 		setElectronsSpin();
 		setParticleSpin();
-		//rotateOut.play();
-		//rotateIn.play();
 	}
 	
 	public void addNucleons(String[] particleTypes){

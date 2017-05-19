@@ -2,6 +2,7 @@ package controlls.mainScreen;
 
 import java.io.IOException;
 
+import UI.ValueBar;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -14,7 +15,6 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
@@ -49,8 +49,14 @@ public class mainController extends Scene {
 		info.setMass(1.008f);
 		info.setMassNumber(2);
 		info.setAtomicNumber(1);
-		
 		particlesContainer.getChildren().add(info);
+		
+		ValueBar bar = new ValueBar(50, 5);
+		bar.setTranslateX(250);
+		bar.setTranslateY(50);
+		bar.setMaxValue(100);
+		bar.setValue(50);
+		particlesContainer.getChildren().add(bar);
 		
 		GaussianBlur blur = new GaussianBlur(0);
 		particlesContainer.setEffect(blur);
@@ -72,7 +78,13 @@ public class mainController extends Scene {
 					particlesContainer.addParticle(new ParticleView(10, 10, new int[]{5,3}, getWidth(), getWidth()));
 					break;
 				case V:
-					particlesContainer.removeParticle(particlesContainer.getSelectedParticle());
+					particlesContainer.removeParticle(particlesContainer.getSelectedParticleView());
+				case UP:
+					bar.setValue(bar.getValue() + 1);
+					break;
+				case DOWN:
+					bar.setValue(bar.getValue() - 1);
+					break;
 				}
 			}
 		});
