@@ -44,14 +44,14 @@ public class mainController extends Scene {
 		ParticleInfoTag info = new ParticleInfoTag(70, 90);
 		info.setTranslateX(getWidth()/8);
 		info.setTranslateY(getHeight()/20);
-		info.setNameTag("H");
+		info.setNameTag("Na");
 		info.setName("hydrogen");
 		info.setMass(1.008f);
 		info.setMassNumber(2);
 		info.setAtomicNumber(1);
 		particlesContainer.getChildren().add(info);
 		
-		ValueBar bar = new ValueBar(50, 5);
+		ValueBar bar = new ValueBar(150, 5);
 		bar.setTranslateX(250);
 		bar.setTranslateY(50);
 		bar.setMaxValue(100);

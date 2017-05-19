@@ -20,10 +20,10 @@ public class ValueBar extends StackPane {
 	
 	private FloatProperty value = new SimpleFloatProperty();
 	public void setValue(float newValue){
-		if(newValue <= getMaxValue() && newValue>=0){
-			value.set(newValue);
-			foregroundLine.setEndX( (newValue * width) / getMaxValue());			
-		}
+		if(newValue >= getMaxValue()) { value.set(getMaxValue()); }
+		else if(newValue <= 0) { value.set(0); }
+		else{ value.set(newValue); }
+		foregroundLine.setEndX( (getValue() * width) / getMaxValue());			
 	}
 	public float getValue(){ return value.get(); }
 	

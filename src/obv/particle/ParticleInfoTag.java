@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -72,9 +73,17 @@ public class ParticleInfoTag extends BorderPane {
 		verticalInfoContainer.setTranslateX(getWidth()/2);
 		verticalInfoContainer.setTranslateY(getHeight()/2);
 		
+		StackPane tagPane = new StackPane();
+		
+		nameTagText = new Text(0, getHeight()/2, "");
+		nameTagText.setFill(Color.WHITE);
+		nameTagText.setFont(Font.font("Helvetica", 35));
+		nameTagText.setFontSmoothingType(FontSmoothingType.GRAY);
+		tagPane.getChildren().add(nameTagText);
+		
 		nucleoidsNumbersContainer = new VBox();
 		nucleoidsNumbersContainer.setAlignment(Pos.TOP_RIGHT);
-		nucleoidsNumbersContainer.setTranslateX(getWidth()/2 - 13);
+		nucleoidsNumbersContainer.translateXProperty().bind(tagPane.widthProperty().divide(-2).add(getWidth()/2));
 		nucleoidsNumbersContainer.setTranslateY(getHeight()/2 - 33);
 		nucleoidsNumbersContainer.setSpacing(12);
 		
@@ -87,11 +96,6 @@ public class ParticleInfoTag extends BorderPane {
 		nameText.setFill(Color.WHITE);
 		nameText.setFont(Font.font("Helvetica", FontPosture.ITALIC, 12));
 		nameText.setFontSmoothingType(FontSmoothingType.LCD);
-		
-		nameTagText = new Text(0, getHeight()/2, "");
-		nameTagText.setFill(Color.WHITE);
-		nameTagText.setFont(Font.font("Helvetica", 35));
-		nameTagText.setFontSmoothingType(FontSmoothingType.LCD);
 		
 		massNumberText = new Text(0, getHeight()/2, "");
 		massNumberText.setFill(Color.WHITE);
@@ -112,7 +116,7 @@ public class ParticleInfoTag extends BorderPane {
 		
 		
 		nucleoidsNumbersContainer.getChildren().addAll(massNumberText, atomicNumberText);
-		verticalInfoContainer.getChildren().addAll(nameTagText, nameText, massText);
+		verticalInfoContainer.getChildren().addAll(tagPane, nameText, massText);
 		getChildren().addAll(tagBackground, verticalInfoContainer, nucleoidsNumbersContainer);		
 	}
 }
