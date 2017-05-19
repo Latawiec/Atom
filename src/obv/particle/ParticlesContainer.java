@@ -3,6 +3,7 @@ package obv.particle;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI.ChoiceIndicator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -10,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
-import obv.ui.ChoiceIndicator;
 
 public class ParticlesContainer extends BorderPane {
 	

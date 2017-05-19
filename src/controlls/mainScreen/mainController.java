@@ -1,19 +1,24 @@
 package controlls.mainScreen;
 
+import java.io.IOException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import obv.particle.ParticleInfoView;
+import obv.particle.ParticleInfoTag;
 import obv.particle.ParticleView;
 import obv.particle.ParticlesContainer;
 
@@ -22,10 +27,11 @@ public class mainController extends Scene {
 	BorderPane root;
 	ParticlesContainer particlesContainer = new ParticlesContainer(480, 480);
 	
-	public mainController() {
+	public mainController() throws IOException {
 		super(new BorderPane(), 480,720, true, SceneAntialiasing.BALANCED);
 		root = (BorderPane) getRoot();
 		Rectangle background = new Rectangle(root.getWidth(), root.getHeight());
+		//Parent wtf = FXMLLoader.load(getClass().getResource());
 		background.setFill(new Color(0.03, 0.03, 0.12, 1));
 		root.getChildren().add(background);
 
@@ -35,12 +41,15 @@ public class mainController extends Scene {
 		root.getChildren().add(particlesContainer);
 		
 		/*--------------*/
-		ParticleInfoView info = new ParticleInfoView(60, 70);
+		ParticleInfoTag info = new ParticleInfoTag(70, 90);
 		info.setTranslateX(getWidth()/8);
 		info.setTranslateY(getHeight()/20);
 		info.setNameTag("H");
 		info.setName("hydrogen");
 		info.setMass(1.008f);
+		info.setMassNumber(2);
+		info.setAtomicNumber(1);
+		
 		particlesContainer.getChildren().add(info);
 		
 		GaussianBlur blur = new GaussianBlur(0);
