@@ -7,15 +7,20 @@ import UI.ChoiceIndicator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
+import model.Particle.ParticleModel;
 
 public class ParticlesContainer extends BorderPane {
 	
+	private List<ParticleModel> particleModels;
+		
 	public IntegerProperty selectedParticle = new SimpleIntegerProperty();
 	public void setSelectedParticle(int newNumber){
 		if(newNumber < particleViews.size() && newNumber >= 0){
@@ -33,8 +38,9 @@ public class ParticlesContainer extends BorderPane {
 	ChoiceIndicator indicator = new ChoiceIndicator();
 	private List<ParticleView> particleViews = new ArrayList<ParticleView>();
 	
-	public ParticlesContainer(double width, double height){
+	public ParticlesContainer(double width, double height, List<ParticleModel> models){
 		super();
+		particleModels = models;
 		setWidth(width);
 		setHeight(height);
 		getChildren().add(slider);
@@ -43,16 +49,19 @@ public class ParticlesContainer extends BorderPane {
 		indicator.setAlignment(Pos.BOTTOM_CENTER);
 		indicator.setTranslateX(getWidth()/2);
 		indicator.setTranslateY(getHeight());
-		setOnMousePressed(o->{
-			if(o.getSceneX()>getWidth()/2){
-				setSelectedParticle(getSelectedParticle() + 1);
-			}else{
-				setSelectedParticle(getSelectedParticle() - 1);
-			}
-		});	
+		
+		for(final ParticleModel model : models){
+			addParticle(model);
+		}
+		
 	}
 	
-	public void addParticle(ParticleView ob){
+	public void addParticle(final ParticleModel model){
+		ParticleView view = new ParticleView(model.getNeutrons(), model.getProtons(), model.getElectronsArray(), widthProperty(), heightProperty());
+		addParticle(view);
+	}
+	
+	private void addParticle(ParticleView ob){
 		particleViews.add(ob);
 		slider.getChildren().add(ob);
 		indicator.addElement();
@@ -65,22 +74,26 @@ public class ParticlesContainer extends BorderPane {
 		return particleViews.get(getSelectedParticle());
 	}
 	
-	public void removeParticle(ParticleView ob){
-		int index = particleViews.indexOf(ob);
+	public void removeParticle(int index){
 		if(index == getSelectedParticle()){
 			setSelectedParticle(index-1);
 		}
-		ob.disassemble(0.5f);
+		particleViews.get(index).disassemble(0.5f);
 		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(0.5f), null));
 		tl.setOnFinished(o->{
 			indicator.removeElement(index);
-			particleViews.remove(ob);
-			slider.getChildren().remove(ob);			
+			particleViews.remove(particleViews.get(index));
+			slider.getChildren().remove(particleViews.get(index));			
 			if(index == 0 && particleViews.size()>0){
 				setSelectedParticle(0);
 			}
 		});
 		tl.play();
+	}
+	
+	public void removeParticle(ParticleView ob){
+		int index = particleViews.indexOf(ob);
+		removeParticle(index);
 	}
 	
 	public final List<ParticleView> getParticleViews(){

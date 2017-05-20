@@ -39,31 +39,24 @@ public class ParticleModel {
 	public int getProtons(){ return protons.get(); }
 	public IntegerProperty getProtonsProperty(){ return protons; }
 	
+	//Electron shells array
+	private int[] electrons = new int[7];
+	public void setElectronsArray(int[] value) { electrons = value; }
+	public void setElectrons(int index, int value) { electrons[index] = value; }
+	public int getElectrons(int index) { return electrons[index]; }
+	public int[] getElectronsArray(){ return electrons; }
 	
-	
-	/*private String nameTag;
-	private String name;
-	private double energy;
-	private int neutronsNumber;
-	private int protonsNumber;
-	private int[] electronsNumber;
-	
-	public int getNeutronsNumber() {
-		return neutronsNumber;
+	public ParticleModel(){}
+	public ParticleModel(int neutrons, int protons, int[] electrons){
+		setNeutrons(neutrons);
+		setProtons(protons);
+		setElectronsArray(electrons);
 	}
-	public void setNeutrons(int number) {
-		this.neutronsNumber = number;
+	public ParticleModel(int neutrons, int protons, int[] electrons, String name, String nameTag){
+		setNeutrons(neutrons);
+		setProtons(protons);
+		setElectronsArray(electrons);
+		setName(name);
+		setNameTag(nameTag);
 	}
-	public int getProtonsNumber() {
-		return protonsNumber;
-	}
-	public void setProtonsNumber(int protonsNumber) {
-		this.protonsNumber = protonsNumber;
-	}
-	public int[] getElectronsNumber() {
-		return electronsNumber;
-	}
-	public void setElectronsNumber(int[] electronsNumber) {
-		this.electronsNumber = electronsNumber;
-	}*/	
 }
