@@ -10,14 +10,20 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.geometry.Point3D;
+import javafx.geometry.Pos;
 import javafx.scene.AmbientLight;
 import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
@@ -28,7 +34,7 @@ public class ParticleView extends SubScene {
 	Group entireParticle;
 	Group centerParticles;					//Nucleons
 	List<Group> electronShells;				//Electron shells (K, L, M, N, O, P, and Q)
-	BorderPane container; 					//This is where every object is added to.
+	StackPane container; 					//This is where every object is added to.
 	Camera camera = new PerspectiveCamera();
 	int nucleons;
 	int protons;
@@ -38,13 +44,16 @@ public class ParticleView extends SubScene {
 	List<Shape3D>nucleonsShapes;
 	List<List<Shape3D>>electronsShapes;
 	
-	public ParticleView(int neutrons, int protons, int[] electrons, double width, double height){
-		super(new BorderPane(), width, height, true, SceneAntialiasing.BALANCED);
-		
+	public ParticleView(int neutrons, int protons, int[] electrons, ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty){
+		super(new StackPane(), 0, 0, true, SceneAntialiasing.BALANCED);
+		widthProperty().bind(widthProperty);
+		heightProperty().bind(heightProperty);
+				
 		camera.setFarClip(1000);
 		setCamera(camera);
 		
-		container = (BorderPane) getRoot();
+		container = (StackPane) getRoot();
+		
 		AmbientLight ambient = new AmbientLight();		//Subscene lighting set to ambient so that everything has no shadow at all.
 		ambient.setColor(Color.rgb(255, 255, 255,0f));
 		this.neutrons = neutrons;
@@ -61,13 +70,15 @@ public class ParticleView extends SubScene {
 		}
 		
 		createParticles();
-
+		
+		Sphere ranger = new Sphere(200, 1);
+		ranger.radiusProperty().bind(widthProperty);
+		ranger.setOpacity(0);
+		entireParticle.getChildren().add(ranger);
 		entireParticle.getChildren().addAll(electronShells);
 		entireParticle.getChildren().add(centerParticles);
 		container.getChildren().addAll(ambient, entireParticle);
-		entireParticle.setManaged(false);
-		entireParticle.setTranslateX(getWidth()/2);
-		entireParticle.setTranslateY(getWidth()/2);
+		
 		setElectronsSpin();
 		setParticleSpin();
 	}
@@ -139,7 +150,7 @@ public class ParticleView extends SubScene {
 	private void createParticles(){
 		Random rand = new Random();
 		
-		double electronShellsOffset = 80;
+		double electronShellsOffset = 110;
 		double electronShellsDelta = 16;
 		
 		for(int i=0; i<nucleons; i++){	
@@ -187,7 +198,7 @@ public class ParticleView extends SubScene {
 		rt.setByAngle(360);
 		rt.setDuration(Duration.seconds(10));
 		rt.setInterpolator(Interpolator.LINEAR);
-		rt.setAxis(new Point3D(1, 1, 1));
+		rt.setAxis(new Point3D(0, 1, 1));
 		rt.setCycleCount(Animation.INDEFINITE);
 		rt.play();
 	}
@@ -199,7 +210,7 @@ public class ParticleView extends SubScene {
 			rt.setByAngle((electronShells.size()-i)*360);
 			rt.setDuration(Duration.seconds((i+1)*9));
 			rt.setInterpolator(Interpolator.LINEAR);
-			Point3D axis = new Point3D(0, 1, 1);
+			Point3D axis = new Point3D(1, 0, 1);
 			rt.setAxis(axis.normalize());
 			rt.setCycleCount(Animation.INDEFINITE);
 			rt.play();
