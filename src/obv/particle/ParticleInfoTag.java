@@ -108,7 +108,7 @@ public class ParticleInfoTag extends BorderPane {
 		atomicNumberText.setFontSmoothingType(FontSmoothingType.LCD);
 		
 		tagBackground = new Rectangle(getWidth(), getHeight());
-		tagBackground.setFill(Color.TRANSPARENT);
+		tagBackground.setFill(new Color(1, 1, 1, 0.2f));
 		tagBackground.setStroke(Color.WHITE);
 		tagBackground.setStrokeType(StrokeType.INSIDE);
 		tagBackground.setStrokeWidth(1);

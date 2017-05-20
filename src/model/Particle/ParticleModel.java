@@ -46,6 +46,11 @@ public class ParticleModel {
 	public int getElectrons(int index) { return electrons[index]; }
 	public int[] getElectronsArray(){ return electrons; }
 	
+	//Stuff
+	public float getParticleMass(){
+		return (getProtons() + getNeutrons())*1.008f;
+	}
+	
 	public ParticleModel(){}
 	public ParticleModel(int neutrons, int protons, int[] electrons){
 		setNeutrons(neutrons);
