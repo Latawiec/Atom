@@ -1,6 +1,8 @@
 package obv.particle;
 
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
@@ -24,7 +26,7 @@ public class ParticleInfoTag extends BorderPane {
 	private Text massText;
 	private Text massNumberText;
 	private Text atomicNumberText;
-	private Rectangle tagBackground;
+	private Shape tagBackground;
 	private VBox verticalInfoContainer;
 	private VBox nucleoidsNumbersContainer;
 	
@@ -113,7 +115,14 @@ public class ParticleInfoTag extends BorderPane {
 		tagBackground.setStrokeWidth(1);
 		tagBackground.setStrokeType(StrokeType.INSIDE);
 		tagBackground.setSmooth(true);
-		
+		/*tagBackground = new Ellipse(0.7f*getWidth(), 0.7f*getWidth());
+		tagBackground.setTranslateX(getWidth()/2);
+		tagBackground.setTranslateY(getHeight()/2);
+		tagBackground.setFill(new Color(1, 1, 1, 0.1f));
+		tagBackground.setStroke(Color.WHITE);
+		tagBackground.setStrokeWidth(2);
+		tagBackground.setStrokeType(StrokeType.INSIDE);
+		tagBackground.setSmooth(true);*/
 		
 		nucleoidsNumbersContainer.getChildren().addAll(massNumberText, atomicNumberText);
 		verticalInfoContainer.getChildren().addAll(tagPane, nameText, massText);

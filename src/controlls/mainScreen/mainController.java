@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -70,6 +71,7 @@ public class mainController extends Scene {
 		
 		/*--------------*/
 		info = new ParticleInfoTag(70, 90);
+		
 		info.setTranslateX(getWidth()/8);
 		info.setTranslateY(getHeight()/20);
 		particlesContainer.getChildren().add(info);
@@ -81,7 +83,7 @@ public class mainController extends Scene {
 		bar.setValue(50);
 		particlesContainer.getChildren().add(bar);
 		
-		GaussianBlur blur = new GaussianBlur(0);
+		GaussianBlur blur = new GaussianBlur(1.5f);
 		particlesContainer.setEffect(blur);
 		setSelectedParticle(0);
 		setOnKeyPressed(new EventHandler<KeyEvent>(){
@@ -92,18 +94,16 @@ public class mainController extends Scene {
 				switch(arg0.getCode()){
 				case LEFT:
 					setSelectedParticle(getSelectedParticle() - 1);
-					//particlesContainer.setSelectedParticle(particlesContainer.getSelectedParticle() - 1);
 					break;
 				case RIGHT:
 					setSelectedParticle(getSelectedParticle() + 1);
-					//particlesContainer.setSelectedParticle(particlesContainer.getSelectedParticle() + 1);
 					break;
 				case SPACE:
 					tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5f), new KeyValue(blur.radiusProperty(), 20)));
 					tl.play();
 					break;
 				case A:
-					tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5f), new KeyValue(blur.radiusProperty(), 0)));
+					tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5f), new KeyValue(blur.radiusProperty(), 1.5f)));
 					tl.play();
 					break;
 				case UP:
