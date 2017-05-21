@@ -58,9 +58,9 @@ public class mainController extends Scene {
 		
 		root = (BorderPane) getRoot();
 		userModel = new UserdataModel();
-		userModel.getParticles().add(new ParticleModel(0, 1, new int[]{1}, "hydrogen", "H"));
-		userModel.getParticles().add(new ParticleModel(1, 1, new int[]{1}, "deuterium", "D"));
-		userModel.getParticles().add(new ParticleModel(143, 92, new int[]{2, 8, 18, 32, 21, 9, 2}, "uranium", "U"));
+		userModel.getParticles().add(new ParticleModel(0, 1, new int[]{1}, "Hydrogen", "H"));
+		userModel.getParticles().add(new ParticleModel(1, 1, new int[]{1}, "Deuterium", "D"));
+		userModel.getParticles().add(new ParticleModel(143, 92, new int[]{2, 8, 18, 32, 21, 9, 2}, "Uranium", "U"));
 		particlesContainer = new ParticlesContainer(getWidth(), getWidth(), userModel.getParticles());
 		Rectangle background = new Rectangle(root.getWidth(), root.getHeight());
 		background.setFill(new Color(0.03, 0.03, 0.12, 1));
