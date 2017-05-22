@@ -9,6 +9,8 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -41,7 +43,7 @@ public class mainController extends Scene {
 	public void setSelectedParticle(int value){
 		if(value >= 0 && value < userModel.getParticlesCount()){
 			particlesContainer.setSelectedParticle(value);
-			selectedParticle.set(particlesContainer.getSelectedParticle());
+			selectedParticle.set(value);
 			
 			final ParticleModel particle = userModel.getParticles().get(value);
 			
@@ -66,7 +68,6 @@ public class mainController extends Scene {
 		Rectangle background = new Rectangle(root.getWidth(), root.getHeight());
 		background.setFill(new Color(0.03, 0.03, 0.12, 1));
 		root.getChildren().add(background);
-
 		root.getChildren().add(particlesContainer);
 		
 		/*--------------*/

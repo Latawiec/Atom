@@ -32,6 +32,7 @@ public class ParticlesContainer extends BorderPane {
 		}
 	}
 	public int getSelectedParticle() { return selectedParticle.get(); }
+	public IntegerProperty getSelectedParticleProperty(){return selectedParticle;}
 	
 	
 	private HBox slider = new HBox();
