@@ -58,7 +58,7 @@ public class ParticlesContainer extends BorderPane {
 	}
 	
 	public void addParticle(final ParticleModel model){
-		ParticleView view = new ParticleView(model.getNeutrons(), model.getProtons(), model.getElectronsArray(), widthProperty(), heightProperty());
+		ParticleView view = new ParticleView(model, widthProperty(), heightProperty());
 		addParticle(view);
 	}
 	

@@ -1,6 +1,7 @@
 package controlls.mainScreen;
 
 import java.io.IOException;
+import java.util.Random;
 
 import UI.ValueBar;
 import javafx.animation.KeyFrame;
@@ -49,7 +50,7 @@ public class mainController extends Scene {
 			
 			info.setNameTag(particle.getNameTag());
 			info.setName(particle.getName());
-			info.setMass(particle.getParticleMass());
+			info.setMass(particle.getMass());
 			info.setAtomicNumber(particle.getProtons());
 			info.setMassNumber(particle.getProtons() + particle.getNeutrons());
 		}
@@ -61,9 +62,10 @@ public class mainController extends Scene {
 		
 		root = (BorderPane) getRoot();
 		userModel = new UserdataModel();
-		userModel.getParticles().add(new ParticleModel(0, 1, new int[]{1}, "Hydrogen", "H"));
-		userModel.getParticles().add(new ParticleModel(1, 1, new int[]{1}, "Deuterium", "D"));
-		userModel.getParticles().add(new ParticleModel(143, 92, new int[]{2, 8, 18, 32, 21, 9, 2}, "Uranium", "U"));
+		userModel.getParticles().add(new ParticleModel(0, 1, new int[]{1}, "Hydrogen", "H", 1.008f));
+		userModel.getParticles().add(new ParticleModel(1, 1, new int[]{1}, "Deuterium", "D", 2.016f));
+		userModel.getParticles().add(new ParticleModel(2, 2, new int[]{2}, "Helium", "He", 4.002f));
+		userModel.getParticles().add(new ParticleModel(143, 92, new int[]{2, 8, 18, 32, 21, 9, 2}, "Uranium", "U", 238));
 		particlesContainer = new ParticlesContainer(getWidth(), getWidth(), userModel.getParticles());
 		Rectangle background = new Rectangle(root.getWidth(), root.getHeight());
 		background.setFill(new Color(0.03, 0.03, 0.12, 1));
@@ -91,6 +93,7 @@ public class mainController extends Scene {
 
 			@Override
 			public void handle(KeyEvent arg0) {
+				Random rand = new Random();
 				Timeline tl = new Timeline();
 				switch(arg0.getCode()){
 				case LEFT:
@@ -109,9 +112,19 @@ public class mainController extends Scene {
 					break;
 				case UP:
 					bar.setValue(bar.getValue() + 1);
+					if(rand.nextBoolean()){
+						userModel.getParticles().get(0).setNeutrons(userModel.getParticles().get(0).getNeutrons() + 1);						
+					}else{
+						userModel.getParticles().get(0).setProtons(userModel.getParticles().get(0).getProtons() + 1);
+					}
 					break;
 				case DOWN:
 					bar.setValue(bar.getValue() - 1);
+					if(rand.nextBoolean()){
+						userModel.getParticles().get(0).setNeutrons(userModel.getParticles().get(0).getNeutrons() - 1);						
+					}else{
+						userModel.getParticles().get(0).setProtons(userModel.getParticles().get(0).getProtons() - 1);
+					}
 					break;
 				}
 			}

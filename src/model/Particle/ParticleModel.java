@@ -1,8 +1,12 @@
 package model.Particle;
 
+import java.util.Arrays;
+
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -27,6 +31,12 @@ public class ParticleModel {
 	public double getEnergy() { return energy.get(); }
 	public DoubleProperty getEnergyProperty(){ return energy; }
 	
+	//Mass Property
+	private FloatProperty mass = new SimpleFloatProperty();
+	public void setMass(float value){ mass.set(value); }
+	public float getMass(){ return mass.get(); }
+	public FloatProperty getMassProperty(){ return mass; }
+	
 	//Neutrons number
 	private IntegerProperty neutrons = new SimpleIntegerProperty();
 	public void setNeutrons(int value){ neutrons.set(value); }
@@ -40,28 +50,33 @@ public class ParticleModel {
 	public IntegerProperty getProtonsProperty(){ return protons; }
 	
 	//Electron shells array
-	private int[] electrons = new int[7];
-	public void setElectronsArray(int[] value) { electrons = value; }
-	public void setElectrons(int index, int value) { electrons[index] = value; }
-	public int getElectrons(int index) { return electrons[index]; }
-	public int[] getElectronsArray(){ return electrons; }
+	private IntegerProperty[] electrons = new IntegerProperty[7];
+	public void setElectronsArray(int[] value) { 
+		for(int i=0; i<value.length; i++){
+			electrons[i].set(value[i]);
+			}
+		}
+	public void setElectrons(int index, int value) { electrons[index].set(value); }
+	public int getElectrons(int index) { return electrons[index].get(); }
+	public IntegerProperty[] getElectronsPropertiesArray(){ return electrons; }
+	public IntegerProperty getElectronsProperty(int index){ return electrons[index]; }
 	
-	//Stuff
-	public float getParticleMass(){
-		return (getProtons() + getNeutrons())*1.008f;
+	public ParticleModel()
+	{
+		for(int i=0; i<7; i++){
+			electrons[i] = new SimpleIntegerProperty(0);
+		}
 	}
-	
-	public ParticleModel(){}
 	public ParticleModel(int neutrons, int protons, int[] electrons){
+		this();
 		setNeutrons(neutrons);
 		setProtons(protons);
 		setElectronsArray(electrons);
 	}
-	public ParticleModel(int neutrons, int protons, int[] electrons, String name, String nameTag){
-		setNeutrons(neutrons);
-		setProtons(protons);
-		setElectronsArray(electrons);
+	public ParticleModel(int neutrons, int protons, int[] electrons, String name, String nameTag, float mass){
+		this(neutrons, protons, electrons);
 		setName(name);
 		setNameTag(nameTag);
+		setMass(mass);
 	}
 }
