@@ -3,16 +3,23 @@ package model.Particle;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class UserdataModel {
 
+	public UserdataModel(){
+		
+	}
+	
 	private List<ParticleModel> particles = new ArrayList<ParticleModel>();
-	private String username;
+	private StringProperty username = new SimpleStringProperty();
 	
 	public List<ParticleModel> getParticles() { return particles; }
 	public void setParticles(List<ParticleModel> particles) { this.particles = particles; }
 	
-	public String getUsername() { return username; }
-	public void setUsername(String username) { this.username = username; }
+	public String getUsername() { return username.get(); }
+	public void setUsername(String value) { username.set(value); }
 	
 	public int getParticlesCount() { return particles.size(); }
 }
