@@ -3,12 +3,14 @@ package model.databaseControllers;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import model.database.ParticleDB;
 import model.database.UserDB;
 import model.database.UserParticleDB;
 
+import javax.management.Query;
 import java.sql.SQLException;
 
 /**
@@ -54,5 +56,10 @@ public class DatabaseAccessor {
 
     public static void Save(UserParticleDB ob) throws SQLException {
         daoUserParticles.createOrUpdate(ob);
+    }
+    public UserDB getUser(String username, String password) throws SQLException {
+        QueryBuilder<UserDB, ?> queryBuilder = daoUsers.queryBuilder();
+        queryBuilder.where().eq("username", username).and().eq("password", password);
+        return queryBuilder.queryForFirst();
     }
 }

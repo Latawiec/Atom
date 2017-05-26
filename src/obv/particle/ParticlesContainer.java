@@ -41,6 +41,7 @@ public class ParticlesContainer extends BorderPane {
 	
 	public ParticlesContainer(double width, double height, List<ParticleModel> models){
 		super();
+
 		particleModels = models;
 		setWidth(width);
 		setHeight(height);

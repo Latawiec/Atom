@@ -26,6 +26,7 @@ import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -43,7 +44,7 @@ public class ParticleView extends SubScene {
 	Camera camera = new PerspectiveCamera();
 	
 	ParticleModel model;
-	
+
 	private IntegerProperty neutrons = new SimpleIntegerProperty();
 	public void setNeutrons(int value){ neutrons.set(value); }
 	public int getNeutrons() { return neutrons.get(); }
@@ -83,8 +84,8 @@ public class ParticleView extends SubScene {
 	public ParticleView(ParticleModel model, ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty){
 		super(new StackPane(), 0, 0, true, SceneAntialiasing.BALANCED);
 		widthProperty().bind(widthProperty);
-		heightProperty().bind(heightProperty);
-		
+		setHeight(heightProperty.get());
+
 		//Setting bindings
 		nucleons.bind(neutrons.add(protons));		//? Does this even work?
 		nucleons.bind(protons.add(neutrons));
@@ -122,7 +123,7 @@ public class ParticleView extends SubScene {
 		setCamera(camera);
 		
 		container = (StackPane) getRoot();
-		
+		container.setBackground(Background.EMPTY);
 		AmbientLight ambient = new AmbientLight();		//Subscene lighting set to ambient so that everything has no shadow at all.
 		ambient.setColor(Color.rgb(255, 255, 255,0f));
 		entireParticle = new Group();
@@ -176,7 +177,7 @@ public class ParticleView extends SubScene {
 			particle.setTranslateX(spawnOffsetMultiplier*nucleonsPositions[position][0]);
 			particle.setTranslateY(spawnOffsetMultiplier*nucleonsPositions[position][1]);
 			particle.setTranslateZ(spawnOffsetMultiplier*nucleonsPositions[position][2]);
-			((ParticlesMaterial) particle.getMaterial()).fadeIn(0.5f*duration);
+			((ParticlesMaterial) particle.getMaterial()).fadeIn(duration);
 		}	
 		updateNucleonsPositions(duration);	
 	}
@@ -224,7 +225,7 @@ public class ParticleView extends SubScene {
 	}
 	
 	double atomRadius(int nucleons){
-		return 4.2f*Math.sqrt(nucleons);
+		return 4.0f*Math.sqrt(nucleons);
 	}
 	
 	private void createParticles(){				

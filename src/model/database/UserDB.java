@@ -27,21 +27,31 @@ public class UserDB {
 
     @DatabaseField(canBeNull = false)
     private String username;
+    public String getUsername(){ return username; }
+    public void setUsername(String value){ username = value; }
 
     @DatabaseField(canBeNull = false)
     private String password;
+    public String getPassword(){ return password; }
+    public void setPassword(String value){ password = value; }
 
     @DatabaseField
     private float energy;
+    public float getEnergy(){ return energy; }
+    public void setEnergy(float value){ energy = value; }
 
     @DatabaseField(canBeNull = false, defaultValue = "0")
     private int level;
+    public int getLevel(){ return level; }
+    public void setLevel(int value){ level = value; }
 
     @DatabaseField(dataType = DataType.DATE)
     private Date creationDate;
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private byte[] unlockedParticles;
+    public byte[] getUnlockedParticles(){ return unlockedParticles; }
+    public void setUnlockedParticles(byte[] values){ unlockedParticles = values; }
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private byte[] unlockedTraits;
