@@ -88,11 +88,11 @@ public class ParticleView extends SubScene {
 		//Setting bindings
 		nucleons.bind(neutrons.add(protons));		//? Does this even work?
 		nucleons.bind(protons.add(neutrons));
-		protons.bind(model.getProtonsProperty());
-		neutrons.bind(model.getNeutronsProperty());
+		protons.bind(new SimpleIntegerProperty(model.getProtons()));
+		neutrons.bind(new SimpleIntegerProperty(model.getNeutrons()));
 		for(int i=0; i<7; i++){
 			electrons[i] = new SimpleIntegerProperty(0);
-			electrons[i].bind(model.getElectronsProperty(i));
+			electrons[i].bind(new SimpleIntegerProperty(model.getElectrons(i)));
 		}
 		
 		//Adding listeners.

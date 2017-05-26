@@ -1,9 +1,11 @@
 package application;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import controlls.mainScreen.mainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.databaseControllers.DatabaseAccessor;
 
 
 public class Main extends Application {
@@ -14,7 +16,10 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException, IOException {
 		launch(args);
+		/*--------*/
+
+		DatabaseAccessor.getInstance();
 	}
 }
