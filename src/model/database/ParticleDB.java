@@ -11,7 +11,11 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "particles")
 public class ParticleDB {
 
-    @DatabaseField( id = true, canBeNull = false)
+    @DatabaseField(generatedId = true, canBeNull = false)
+    private int id;
+    public int getId(){return id;};
+
+    @DatabaseField( canBeNull = false)
     private int protons;
     public int getProtons(){ return protons; }
     public void setProtons(int value){ protons = value; }
@@ -44,12 +48,12 @@ public class ParticleDB {
 
     }
 
-    public ParticleDB(int neutrons, int protons, int[] electrons, String name, String nameTag, float mass, float energy){
+    public ParticleDB(int neutrons, int protons, int[] electrons, String name, String nameTag, float mass, float bindingEnergy){
         this(neutrons, protons, electrons);
         this.name = name;
         this.nameTag = nameTag;
         this.mass = mass;
-        this.bindingEnergy = energy;
+        this.bindingEnergy = bindingEnergy;
     }
 
     public ParticleDB(int neutrons, int protons, int[] electrons){

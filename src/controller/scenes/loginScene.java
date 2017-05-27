@@ -60,6 +60,9 @@ public class loginScene extends SceneTemplate {
         passwordField.setMaxWidth(100);
         Text atomLabel = new Text("A    T    O    M");
         atomLabel.setFont(Font.font("Helvetica", FontWeight.EXTRA_LIGHT, 18));
+        Text creditsLabel = new Text("github.com/Latawiec");
+        creditsLabel.setFont(Font.font("Helvetica", FontWeight.EXTRA_LIGHT, 10));
+        creditsLabel.setFill(new Color(1,1,1,0.2f));
 
         FillTransition label = new FillTransition(Duration.seconds(2f), atomLabel, Color.TRANSPARENT, Color.WHITE);
         label.play();
@@ -77,8 +80,9 @@ public class loginScene extends SceneTemplate {
         stack.setAlignment(Pos.CENTER);
         view.setTranslateY(-100);
         stack.setTranslateY(200);
-        atomLabel.setTranslateY(100);
-        container.getChildren().addAll(background, view, stack, atomLabel);
+        atomLabel.setTranslateY(50);
+        creditsLabel.translateYProperty().bind(heightProperty().divide(2).add(-10));
+        container.getChildren().addAll(background, view, stack, atomLabel, creditsLabel);
         stack.getChildren().addAll(usernameField, passwordField, loginButton, outputLabel);
 
         root.getChildren().add(container);
@@ -102,7 +106,14 @@ public class loginScene extends SceneTemplate {
                     }
                 }));
                 tl.play();
+
         }else{
+            usernameField.setText("");
+            passwordField.setText("");
+            Timeline tl = new Timeline();
+            tl.getKeyFrames().add(new KeyFrame(Duration.ZERO, new KeyValue(outputLabel.opacityProperty(), 0)));
+            tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5f), new KeyValue(outputLabel.opacityProperty(), 1)));
+            tl.play();
             outputLabel.setText("Incorrect password or username.");
         }
     }

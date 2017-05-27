@@ -109,20 +109,22 @@ public class ParticleInfoTag extends BorderPane {
 		atomicNumberText.setFont(Font.font("Helvetica", 10));
 		atomicNumberText.setFontSmoothingType(FontSmoothingType.LCD);
 		
-		tagBackground = new Rectangle(getWidth(), getHeight());
+		/*tagBackground = new Rectangle(getWidth(), getHeight());
 		tagBackground.setFill(new Color(1, 1, 1, 0.1f));
 		tagBackground.setStroke(Color.WHITE);
 		tagBackground.setStrokeWidth(1);
 		tagBackground.setStrokeType(StrokeType.INSIDE);
-		tagBackground.setSmooth(true);
-		/*tagBackground = new Ellipse(0.7f*getWidth(), 0.7f*getWidth());
+		tagBackground.setSmooth(true);*/
+		tagBackground = new Ellipse(0.7f*getWidth(), 0.7f*getWidth());
 		tagBackground.setTranslateX(getWidth()/2);
 		tagBackground.setTranslateY(getHeight()/2);
+		tagBackground.setRotate(-90);
 		tagBackground.setFill(new Color(1, 1, 1, 0.1f));
 		tagBackground.setStroke(Color.WHITE);
+		tagBackground.getStrokeDashArray().addAll(Math.PI* ( (Ellipse) tagBackground).getRadiusX(), Double.MAX_VALUE);
 		tagBackground.setStrokeWidth(2);
 		tagBackground.setStrokeType(StrokeType.INSIDE);
-		tagBackground.setSmooth(true);*/
+		tagBackground.setSmooth(true);
 		
 		nucleoidsNumbersContainer.getChildren().addAll(massNumberText, atomicNumberText);
 		verticalInfoContainer.getChildren().addAll(tagPane, nameText, massText);

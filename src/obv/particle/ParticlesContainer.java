@@ -7,15 +7,12 @@ import UI.ChoiceIndicator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
-import model.Particle.ParticleModel;
 import model.databaseControllers.ParticleController;
 
 public class ParticlesContainer extends BorderPane {
@@ -24,9 +21,14 @@ public class ParticlesContainer extends BorderPane {
 		
 	public IntegerProperty selectedParticle = new SimpleIntegerProperty();
 	public void setSelectedParticle(int newNumber){
-		if(newNumber < particleViews.size() && newNumber >= 0){
+		if(newNumber < particleViews.size() && newNumber >= 0 && newNumber!=selectedParticle.get()){
+			int oldNumber = selectedParticle.get();
 			selectedParticle.set(newNumber);
+			particleViews.get(newNumber).setVisible(true);
 			TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5f), slider);
+			tt.setOnFinished(e->{
+				particleViews.get(oldNumber).setVisible(false);
+			});
 			tt.setToX(-newNumber*getWidth());
 			indicator.selectElement(getSelectedParticle());
 			tt.play();
@@ -56,11 +58,12 @@ public class ParticlesContainer extends BorderPane {
 		for(final ParticleController c : controlls){
 			addParticle(c);
 		}
-		
+		particleViews.get(0).setVisible(true);
 	}
 	
 	public void addParticle(final ParticleController controller){
 		ParticleView view = new ParticleView(controller, widthProperty(), heightProperty());
+		view.setVisible(false);
 		addParticle(view);
 	}
 	
