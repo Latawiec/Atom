@@ -43,8 +43,11 @@ public class mainScene extends SceneTemplate {
 			info.setNameTag(particle.getNameTag());
 			info.setName(particle.getName());
 			info.setMass(particle.getMass());
+			info.setBindingEnergy(particle.getBindingEnergy());
+			info.setEnergy(particle.getEnergy());
 			info.setAtomicNumber(particle.getProtons());
 			info.setMassNumber(particle.getProtons() + particle.getNeutrons());
+			info.setEnergized(particle.isEnergized());
 		}
 	}
 	public int getSelectedParticle() { return selectedParticle.get(); }
@@ -102,6 +105,7 @@ public class mainScene extends SceneTemplate {
 					break;
 				}
 			}
+
 		});
 	}
 }

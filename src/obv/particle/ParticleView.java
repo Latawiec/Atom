@@ -151,7 +151,14 @@ public class ParticleView extends SubScene {
 		setElectronsSpin();
 		setParticleSpin();
 	}
-	
+
+	public void disableElectronShells(){
+		entireParticle.getChildren().removeAll(electronShells);
+	}
+	public void enableElectronShells(){
+		entireParticle.getChildren().addAll(electronShells);
+	}
+
 	public void addNucleons(int protons, int neutrons){
 		float duration = 0.5f;
 		Random rand = new Random();

@@ -27,7 +27,9 @@ public class ParticlesContainer extends BorderPane {
 			particleViews.get(newNumber).setVisible(true);
 			TranslateTransition tt = new TranslateTransition(Duration.seconds(0.5f), slider);
 			tt.setOnFinished(e->{
-				particleViews.get(oldNumber).setVisible(false);
+				if(selectedParticle.get() != oldNumber) {
+					particleViews.get(oldNumber).setVisible(false);
+				}
 			});
 			tt.setToX(-newNumber*getWidth());
 			indicator.selectElement(getSelectedParticle());

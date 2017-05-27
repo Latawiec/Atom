@@ -1,15 +1,13 @@
 package obv.particle;
 
-import javafx.scene.shape.Ellipse;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeType;
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.shape.*;
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -19,6 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import java.sql.Time;
 
 public class ParticleInfoTag extends BorderPane {
 	private Text nameTagText;
@@ -29,7 +29,23 @@ public class ParticleInfoTag extends BorderPane {
 	private Shape tagBackground;
 	private VBox verticalInfoContainer;
 	private VBox nucleoidsNumbersContainer;
-	
+
+	public FloatProperty bindingEnergy = new SimpleFloatProperty(-1);
+	public void setBindingEnergy(float value){
+		bindingEnergy.set(value);
+	}
+	public float getBindingEnergy(){ return bindingEnergy.get(); }
+
+	public FloatProperty energy = new SimpleFloatProperty(-1);
+	public void setEnergy(float value){
+		energy.set(value);
+	}
+	public float getEnergy(){ return energy.get(); }
+
+	public BooleanProperty energized = new SimpleBooleanProperty();
+	public void setEnergized(boolean value){ energized.set(value); }
+	public boolean isEnergized(){ return energized.get(); }
+
 	public IntegerProperty atomicNumber = new SimpleIntegerProperty();
 	public void setAtomicNumber(int newNumber){
 		atomicNumberText.setText(Integer.toString(newNumber));
@@ -108,13 +124,7 @@ public class ParticleInfoTag extends BorderPane {
 		atomicNumberText.setFill(Color.WHITE);
 		atomicNumberText.setFont(Font.font("Helvetica", 10));
 		atomicNumberText.setFontSmoothingType(FontSmoothingType.LCD);
-		
-		/*tagBackground = new Rectangle(getWidth(), getHeight());
-		tagBackground.setFill(new Color(1, 1, 1, 0.1f));
-		tagBackground.setStroke(Color.WHITE);
-		tagBackground.setStrokeWidth(1);
-		tagBackground.setStrokeType(StrokeType.INSIDE);
-		tagBackground.setSmooth(true);*/
+
 		tagBackground = new Ellipse(0.7f*getWidth(), 0.7f*getWidth());
 		tagBackground.setTranslateX(getWidth()/2);
 		tagBackground.setTranslateY(getHeight()/2);
@@ -123,9 +133,44 @@ public class ParticleInfoTag extends BorderPane {
 		tagBackground.setStroke(Color.WHITE);
 		tagBackground.getStrokeDashArray().addAll(Math.PI* ( (Ellipse) tagBackground).getRadiusX(), Double.MAX_VALUE);
 		tagBackground.setStrokeWidth(2);
-		tagBackground.setStrokeType(StrokeType.INSIDE);
+		tagBackground.setStrokeLineCap(StrokeLineCap.ROUND);
+		tagBackground.setStrokeType(StrokeType.CENTERED);
 		tagBackground.setSmooth(true);
-		
+
+		Timeline tl = new Timeline();
+		tl.getKeyFrames().add(new KeyFrame(Duration.ZERO, new KeyValue(tagBackground.strokeWidthProperty(), 2)));
+		tl.getKeyFrames().add(new KeyFrame(Duration.seconds(2), new KeyValue(tagBackground.strokeWidthProperty(), 5)));
+		tl.getKeyFrames().add(new KeyFrame(Duration.seconds(3), new KeyValue(tagBackground.strokeWidthProperty(), 2)));
+		tl.setCycleCount(Animation.INDEFINITE);
+
+		ChangeListener<Number> lengthListener = new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				double value = getEnergy()/getBindingEnergy();
+				tagBackground.getStrokeDashArray().set(0, 2*Math.PI*( (Ellipse) tagBackground).getRadiusX() * value);
+			}
+		};
+
+		bindingEnergy.addListener(lengthListener);
+		energy.addListener(lengthListener);
+
+		ChangeListener<Boolean> animListener = new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue){
+					tagBackground.setStroke(Color.AQUA);
+					tl.stop();
+					tl.setCycleCount(Animation.INDEFINITE);
+					tl.play();
+				}else{
+					tagBackground.setStroke(Color.WHITE);
+					tl.stop();
+					tagBackground.setStrokeWidth(2);
+				}
+			}
+		};
+		energized.addListener(animListener);
+
 		nucleoidsNumbersContainer.getChildren().addAll(massNumberText, atomicNumberText);
 		verticalInfoContainer.getChildren().addAll(tagPane, nameText, massText);
 		getChildren().addAll(tagBackground, verticalInfoContainer, nucleoidsNumbersContainer);		

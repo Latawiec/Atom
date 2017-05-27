@@ -79,9 +79,9 @@ public class DatabaseAccessor {
         daoUsers.createOrUpdate(new UserDB("Latawiec", "1", 0));
 
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(14),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(30),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(18),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(14),10000 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(30),2000 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(18),11000 ));
     }
 
     private void particlesCreator() throws SQLException {

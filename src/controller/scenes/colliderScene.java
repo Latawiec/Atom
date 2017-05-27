@@ -7,9 +7,8 @@ import controller.ScenesController;
  */
 public class colliderScene extends SceneTemplate {
 
-
-
     public colliderScene(ScenesController controller) {
         super(controller);
+
     }
 }
