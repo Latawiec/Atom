@@ -12,6 +12,8 @@ import model.database.UserParticleDB;
 
 import javax.management.Query;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Latawiec on 26/05/2017.
@@ -61,5 +63,11 @@ public class DatabaseAccessor {
         QueryBuilder<UserDB, ?> queryBuilder = daoUsers.queryBuilder();
         queryBuilder.where().eq("username", username).and().eq("password", password);
         return queryBuilder.queryForFirst();
+    }
+
+    public List<UserParticleDB> getUserParticles(UserDB user) throws SQLException {
+        QueryBuilder<UserParticleDB, ?> queryBuilder = daoUserParticles.queryBuilder();
+        queryBuilder.where().eq("owner_id", user.getID());
+        return queryBuilder.query();
     }
 }

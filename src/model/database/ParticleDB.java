@@ -44,13 +44,17 @@ public class ParticleDB {
 
     }
 
-    public ParticleDB(int neutrons, int protons, String name, String nameTag, float mass, float energy, int[] electrons){
-        this.neutrons = neutrons;
-        this.protons = protons;
+    public ParticleDB(int neutrons, int protons, int[] electrons, String name, String nameTag, float mass, float energy){
+        this(neutrons, protons, electrons);
         this.name = name;
         this.nameTag = nameTag;
         this.mass = mass;
         this.bindingEnergy = energy;
+    }
+
+    public ParticleDB(int neutrons, int protons, int[] electrons){
+        this.neutrons = neutrons;
+        this.protons = protons;
         this.electrons = electrons;
     }
 }

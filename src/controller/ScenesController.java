@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import model.database.UserDB;
 
 import java.io.IOException;
 
@@ -22,6 +23,10 @@ public class ScenesController {
     }
 
     private Stage mainStage;
+
+    private UserDB user;
+    public UserDB getUser(){ return user; }
+    public void setUser(UserDB user) { this.user = user; }
 
     private double width;
     public double getWidth(){ return width; }

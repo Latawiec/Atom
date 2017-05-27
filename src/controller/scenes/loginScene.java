@@ -1,31 +1,27 @@
 package controller.scenes;
 
-import application.Main;
 import controller.ScenesController;
-import javafx.animation.FillTransition;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.*;
 import javafx.util.Duration;
-import model.Particle.ParticleModel;
+import model.database.ParticleDB;
+import model.database.UserDB;
+import model.database.UserParticleDB;
 import model.databaseControllers.DatabaseAccessor;
+import model.databaseControllers.ParticleController;
 import obv.particle.ParticleView;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collection;
-
 
 /**
  * Created by Latawiec on 26/05/2017.
@@ -36,6 +32,7 @@ public class loginScene extends SceneTemplate {
 
     TextField usernameField;
     TextField passwordField;
+    Label outputLabel;
     Button loginButton;
 
     public loginScene(ScenesController controller) {
@@ -44,6 +41,7 @@ public class loginScene extends SceneTemplate {
         container = new StackPane();
         usernameField = new TextField();
         passwordField = new PasswordField();
+        outputLabel = new Label();
         loginButton = new Button("Log in");
         loginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -55,7 +53,10 @@ public class loginScene extends SceneTemplate {
                 }
             }
         });
+        outputLabel.setTextFill(Color.CRIMSON);
+        usernameField.setPromptText("username");
         usernameField.setMaxWidth(100);
+        passwordField.setPromptText("password");
         passwordField.setMaxWidth(100);
         Text atomLabel = new Text("A    T    O    M");
         atomLabel.setFont(Font.font("Helvetica", FontWeight.EXTRA_LIGHT, 18));
@@ -70,26 +71,39 @@ public class loginScene extends SceneTemplate {
 
         container.setEffect(new GaussianBlur(1.5f));
         VBox stack = new VBox();
-        ParticleView view = new ParticleView(new ParticleModel(6, 	6, new int[]{2, 4}), widthProperty(), heightProperty());
+        ParticleView view = new ParticleView(new ParticleController(new UserParticleDB(new UserDB(), new ParticleDB(6, 6, new int[]{2, 4, 0, 0, 0, 0, 0}), 1)), widthProperty(), heightProperty());
+
         stack.setSpacing(10);
         stack.setAlignment(Pos.CENTER);
         view.setTranslateY(-100);
         stack.setTranslateY(200);
+        atomLabel.setTranslateY(100);
         container.getChildren().addAll(background, view, stack, atomLabel);
-        stack.getChildren().addAll(usernameField, passwordField, loginButton);
+        stack.getChildren().addAll(usernameField, passwordField, loginButton, outputLabel);
 
         root.getChildren().add(container);
     }
 
     private void tryLogIn(String username, String password) throws SQLException {
-        if(DatabaseAccessor.getInstance().getUser(username, password) != null){
-            try {
-                controller.setScene(ScenesController.Scenes.Main);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        UserDB user = DatabaseAccessor.getInstance().getUser(username, password);
+        if( user != null){
+                controller.setUser(user);
+                outputLabel.setTextFill(Color.GREEN);
+                outputLabel.setText("Access granted! Logging in...");
+                Timeline tl = new Timeline();
+                tl.getKeyFrames().add(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        try {
+                            controller.setScene(ScenesController.Scenes.Main);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }));
+                tl.play();
         }else{
-
+            outputLabel.setText("Incorrect password or username.");
         }
     }
 }

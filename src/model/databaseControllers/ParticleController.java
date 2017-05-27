@@ -50,6 +50,11 @@ public class ParticleController implements DatabaseSource{
     public void setEnergy(float value){ energy.set(value); }
     public FloatProperty getEnergyProperty(){ return energy; }
 
+    private FloatProperty mass;
+    public float getMass(){ return mass.get(); }
+    public void setMass(float value){ mass.set(value);}
+    public FloatProperty getMassProperty(){ return mass; }
+
     public ParticleController(UserParticleDB db){
         this.sourceDB = db;
         protons = new SimpleIntegerProperty(sourceDB.getParticleTemplate().getProtons());
@@ -58,6 +63,7 @@ public class ParticleController implements DatabaseSource{
         nameTag = new SimpleStringProperty(sourceDB.getParticleTemplate().getNameTag());
         bindingEnergy = new SimpleFloatProperty(sourceDB.getParticleTemplate().getBindingEnergy());
         energy = new SimpleFloatProperty(sourceDB.getEnergy());
+        mass = new SimpleFloatProperty(sourceDB.getParticleTemplate().getMass());
         for(int i=0; i<7; i++){
             electrons[i] = new SimpleIntegerProperty(sourceDB.getParticleTemplate().getElectrons()[i]);
         }

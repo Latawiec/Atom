@@ -34,6 +34,7 @@ import javafx.scene.shape.Shape3D;
 import javafx.scene.shape.Sphere;
 import javafx.util.Duration;
 import model.Particle.ParticleModel;
+import model.databaseControllers.ParticleController;
 
 public class ParticleView extends SubScene {
 	
@@ -43,7 +44,7 @@ public class ParticleView extends SubScene {
 	StackPane container; 					//This is where every object is added to.
 	Camera camera = new PerspectiveCamera();
 	
-	ParticleModel model;
+	ParticleController controller;
 
 	private IntegerProperty neutrons = new SimpleIntegerProperty();
 	public void setNeutrons(int value){ neutrons.set(value); }
@@ -81,7 +82,7 @@ public class ParticleView extends SubScene {
 	List<Shape3D>nucleonsShapes;
 	List<List<Shape3D>>electronsShapes;
 	
-	public ParticleView(ParticleModel model, ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty){
+	public ParticleView(ParticleController controller, ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty){
 		super(new StackPane(), 0, 0, true, SceneAntialiasing.BALANCED);
 		widthProperty().bind(widthProperty);
 		setHeight(heightProperty.get());
@@ -89,11 +90,11 @@ public class ParticleView extends SubScene {
 		//Setting bindings
 		nucleons.bind(neutrons.add(protons));		//? Does this even work?
 		nucleons.bind(protons.add(neutrons));
-		protons.bind(new SimpleIntegerProperty(model.getProtons()));
-		neutrons.bind(new SimpleIntegerProperty(model.getNeutrons()));
+		protons.bind(new SimpleIntegerProperty(controller.getProtons()));
+		neutrons.bind(new SimpleIntegerProperty(controller.getNeutrons()));
 		for(int i=0; i<7; i++){
 			electrons[i] = new SimpleIntegerProperty(0);
-			electrons[i].bind(new SimpleIntegerProperty(model.getElectrons(i)));
+			electrons[i].bind(new SimpleIntegerProperty(controller.getElectrons(i)));
 		}
 		
 		//Adding listeners.

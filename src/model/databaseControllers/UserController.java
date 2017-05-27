@@ -2,7 +2,10 @@ package model.databaseControllers;
 
 import javafx.beans.property.*;
 import model.database.UserDB;
+import model.database.UserParticleDB;
 
+import javax.jws.soap.SOAPBinding;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,6 +39,11 @@ public class UserController implements DatabaseSource {
     private ArrayList<Byte> unlockedParticles;
     public void unlockParticle(byte number){ unlockedParticles.add(number); }
 
+    private ArrayList<ParticleController> particles;
+    public ParticleController getParticle(int index){ return particles.get(index); }
+    public ArrayList<ParticleController> getParticlesArray(){ return particles; }
+    public int getParticlesCount(){ return particles.size(); }
+
     public UserController(UserDB source){
         this.sourceDB = source;
 
@@ -44,11 +52,24 @@ public class UserController implements DatabaseSource {
         energy = new SimpleFloatProperty(source.getEnergy());
         level = new SimpleIntegerProperty(source.getLevel());
         unlockedParticles = new ArrayList<Byte>();
-        for(int i=0; i<source.getUnlockedParticles().length; i++){
+        particles = new ArrayList<ParticleController>();
+        /*for(int i=0; i<source.getUnlockedParticles().length; i++){
             unlockedParticles.add(source.getUnlockedParticles()[i]);
-        }
+        }*/
+        loadParticles();
     }
 
+    private void loadParticles(){
+        ArrayList<UserParticleDB> result = new ArrayList<UserParticleDB>();
+        try {
+            result = (ArrayList<UserParticleDB>) DatabaseAccessor.getInstance().getUserParticles(sourceDB);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        for(UserParticleDB p : result){
+            particles.add(new ParticleController(p));
+        }
+    }
 
     @Override
     public void save() {

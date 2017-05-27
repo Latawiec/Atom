@@ -16,10 +16,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
 import model.Particle.ParticleModel;
+import model.databaseControllers.ParticleController;
 
 public class ParticlesContainer extends BorderPane {
 	
-	private List<ParticleModel> particleModels;
+	private List<ParticleController> particleControlls;
 		
 	public IntegerProperty selectedParticle = new SimpleIntegerProperty();
 	public void setSelectedParticle(int newNumber){
@@ -39,10 +40,10 @@ public class ParticlesContainer extends BorderPane {
 	ChoiceIndicator indicator = new ChoiceIndicator();
 	private List<ParticleView> particleViews = new ArrayList<ParticleView>();
 	
-	public ParticlesContainer(double width, double height, List<ParticleModel> models){
+	public ParticlesContainer(double width, double height, List<ParticleController> controlls){
 		super();
 
-		particleModels = models;
+		particleControlls = controlls;
 		setWidth(width);
 		setHeight(height);
 		getChildren().add(slider);
@@ -52,14 +53,14 @@ public class ParticlesContainer extends BorderPane {
 		indicator.setTranslateX(getWidth()/2);
 		indicator.setTranslateY(getHeight());
 		
-		for(final ParticleModel model : models){
-			addParticle(model);
+		for(final ParticleController c : controlls){
+			addParticle(c);
 		}
 		
 	}
 	
-	public void addParticle(final ParticleModel model){
-		ParticleView view = new ParticleView(model, widthProperty(), heightProperty());
+	public void addParticle(final ParticleController controller){
+		ParticleView view = new ParticleView(controller, widthProperty(), heightProperty());
 		addParticle(view);
 	}
 	

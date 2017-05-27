@@ -13,7 +13,7 @@ public class UserParticleDB {
     @DatabaseField(generatedId = true, canBeNull = false)
     private int id;
 
-    @DatabaseField(foreign = true)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
     ParticleDB particleTempalte;
     public ParticleDB getParticleTemplate(){ return particleTempalte; }
 

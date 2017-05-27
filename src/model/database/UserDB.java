@@ -24,6 +24,7 @@ public class UserDB {
 
     @DatabaseField(generatedId = true)
     private int id;
+    public int getID(){ return id; }
 
     @DatabaseField(canBeNull = false)
     private String username;
@@ -49,7 +50,7 @@ public class UserDB {
     private Date creationDate;
 
     @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private byte[] unlockedParticles;
+    private byte[] unlockedParticles = new byte[]{};
     public byte[] getUnlockedParticles(){ return unlockedParticles; }
     public void setUnlockedParticles(byte[] values){ unlockedParticles = values; }
 
