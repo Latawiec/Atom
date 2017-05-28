@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class ParticleController implements DatabaseSource{
 
     private UserParticleDB sourceDB;
+    public UserParticleDB getSourceDB(){ return sourceDB; }
 
     private IntegerProperty protons = new SimpleIntegerProperty();
     public int getProtons(){ return protons.get(); }
@@ -21,6 +22,8 @@ public class ParticleController implements DatabaseSource{
     public int getNeutrons(){ return neutrons.get(); }
     public void setNeutrons(int value){ neutrons.set(value); }
     public IntegerProperty getNeutronsProperty(){ return neutrons; }
+
+    public int getNucleons(){ return getProtons() + getNeutrons(); }
 
     private IntegerProperty[] electrons = new IntegerProperty[7];
     public int getElectrons(int index){ return electrons[index].get(); }

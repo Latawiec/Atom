@@ -25,6 +25,10 @@ public class ParticleDB {
     public int getNeutrons(){ return neutrons; }
 
     @DatabaseField(canBeNull = false)
+    private int nucleons;
+    public int getNucleons(){ return nucleons; }
+
+    @DatabaseField(canBeNull = false)
     private String name;
     public String getName(){ return name; }
 
@@ -60,5 +64,6 @@ public class ParticleDB {
         this.neutrons = neutrons;
         this.protons = protons;
         this.electrons = electrons;
+        this.nucleons = neutrons + protons;
     }
 }

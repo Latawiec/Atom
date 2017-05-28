@@ -67,7 +67,9 @@ public class ChoiceIndicator extends HBox {
 	
 	public void selectElement(int number){
 		double durationSeconds = 0.5f;
-		indicators.get(chosenElement).animateOpacity(durationSeconds);
+		if(indicators.size()>1) {
+			indicators.get(chosenElement).animateOpacity(durationSeconds);
+		}
 		chosenElement = number;
 		indicators.get(chosenElement).animateOpacity(durationSeconds, 1);
 	}

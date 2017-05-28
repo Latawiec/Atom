@@ -2,10 +2,13 @@ package model.databaseControllers;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Particle;
 import javafx.scene.control.Tab;
 import model.database.ParticleDB;
 import model.database.UserDB;
@@ -79,9 +82,32 @@ public class DatabaseAccessor {
         daoUsers.createOrUpdate(new UserDB("Latawiec", "1", 0));
 
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
+
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(14),10000 ));
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(30),2000 ));
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(18),11000 ));
+    }
+
+    public void deleteUserParticles(UserDB user) throws SQLException {
+        DeleteBuilder<UserParticleDB, Integer> deleteBuilder = daoUserParticles.deleteBuilder();
+        deleteBuilder.where().eq("owner_id", user.getID());
+        deleteBuilder.delete();
+    }
+
+    public void updateUserParticles(ArrayList<ParticleController> particles) throws SQLException {
+        for(ParticleController p : particles){
+            daoUserParticles.createOrUpdate(p.getSourceDB());
+        }
+    }
+
+    public List<ParticleDB> getParticlesWithNucleonsNumber (int nucleons) throws SQLException {
+        QueryBuilder<ParticleDB, ?> queryBuilder = daoParticles.queryBuilder();
+        queryBuilder.where().eq("nucleons", nucleons);
+        return queryBuilder.query();
     }
 
     private void particlesCreator() throws SQLException {

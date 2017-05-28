@@ -11,6 +11,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
@@ -64,7 +65,19 @@ public class mainScene extends SceneTemplate {
 		background.setFill(new Color(0.03, 0.03, 0.12, 1));
 		root.getChildren().add(background);
 		root.getChildren().add(particlesContainer);
-		
+
+		/*-------------*/
+
+		Button TEST = new Button("Goto Collider");
+		TEST.setOnAction(e->{
+			try {
+				controller.setScene(ScenesController.Scenes.Collider);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		});
+		root.getChildren().add(TEST);
+
 		/*--------------*/
 		info = new ParticleInfoTag(70, 90);
 		

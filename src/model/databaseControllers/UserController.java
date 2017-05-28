@@ -1,5 +1,6 @@
 package model.databaseControllers;
 
+import com.j256.ormlite.stmt.DeleteBuilder;
 import javafx.beans.property.*;
 import model.database.UserDB;
 import model.database.UserParticleDB;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 public class UserController implements DatabaseSource {
 
     private UserDB sourceDB;
+    public UserDB getSourceDB(){ return sourceDB ;}
 
     private StringProperty username;
     public String getUsername(){ return username.get(); }
@@ -42,6 +44,7 @@ public class UserController implements DatabaseSource {
     private ArrayList<ParticleController> particles;
     public ParticleController getParticle(int index){ return particles.get(index); }
     public ArrayList<ParticleController> getParticlesArray(){ return particles; }
+    public void setParticlesArray(ArrayList<ParticleController> value){ particles = value; }
     public int getParticlesCount(){ return particles.size(); }
 
     public UserController(UserDB source){
@@ -53,9 +56,6 @@ public class UserController implements DatabaseSource {
         level = new SimpleIntegerProperty(source.getLevel());
         unlockedParticles = new ArrayList<Byte>();
         particles = new ArrayList<ParticleController>();
-        /*for(int i=0; i<source.getUnlockedParticles().length; i++){
-            unlockedParticles.add(source.getUnlockedParticles()[i]);
-        }*/
         loadParticles();
     }
 
@@ -74,5 +74,14 @@ public class UserController implements DatabaseSource {
     @Override
     public void save() {
 
+    }
+
+    public void saveParticles(){
+        try {
+            DatabaseAccessor.getInstance().deleteUserParticles(sourceDB);
+            DatabaseAccessor.getInstance().updateUserParticles(particles);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

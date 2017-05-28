@@ -1,5 +1,6 @@
 package controller;
 
+import controller.scenes.colliderScene;
 import controller.scenes.loginScene;
 import controller.scenes.mainScene;
 import javafx.scene.Scene;
@@ -51,6 +52,9 @@ public class ScenesController {
                 break;
             case Main:
                 changeScene(new mainScene(this));
+                break;
+            case Collider:
+                changeScene(new colliderScene(this));
                 break;
         }
     }

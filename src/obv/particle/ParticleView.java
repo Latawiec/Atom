@@ -36,7 +36,7 @@ import javafx.util.Duration;
 import model.Particle.ParticleModel;
 import model.databaseControllers.ParticleController;
 
-public class ParticleView extends SubScene {
+public class ParticleView extends StackPane {
 	
 	Group entireParticle;
 	Group centerParticles;					//Nucleons
@@ -83,10 +83,13 @@ public class ParticleView extends SubScene {
 	List<List<Shape3D>>electronsShapes;
 	
 	public ParticleView(ParticleController controller, ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty){
-		super(new StackPane(), 0, 0, true, SceneAntialiasing.BALANCED);
-		widthProperty().bind(widthProperty);
-		setHeight(heightProperty.get());
-
+		super();
+		SubScene scene = new SubScene(new StackPane(), 0, 0, true, SceneAntialiasing.BALANCED);
+		scene.widthProperty().bind(widthProperty);
+		scene.setHeight(heightProperty.get());
+		getChildren().add(scene);
+		setWidth(scene.getWidth());
+		setHeight(scene.getHeight());
 		//Setting bindings
 		nucleons.bind(neutrons.add(protons));		//? Does this even work?
 		nucleons.bind(protons.add(neutrons));
@@ -121,9 +124,9 @@ public class ParticleView extends SubScene {
 		});
 		//Setting camera
 		camera.setFarClip(1000);
-		setCamera(camera);
+		scene.setCamera(camera);
 		
-		container = (StackPane) getRoot();
+		container = (StackPane) scene.getRoot();
 		container.setBackground(Background.EMPTY);
 		AmbientLight ambient = new AmbientLight();		//Subscene lighting set to ambient so that everything has no shadow at all.
 		ambient.setColor(Color.rgb(255, 255, 255,0f));
@@ -189,7 +192,7 @@ public class ParticleView extends SubScene {
 		}	
 		updateNucleonsPositions(duration);	
 	}
-	
+
 	public void disassemble(double duration){
 		double distanceMultiplier=5;
 		Timeline tl = new Timeline();
