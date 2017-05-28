@@ -78,7 +78,9 @@ public class ParticlesContainer extends BorderPane {
 		for(final ParticleController c : controlls){
 			addParticle(c);
 		}
-		particleViews.get(0).setVisible(true);
+		if(particleViews.size()>0){
+			particleViews.get(0).setVisible(true);
+		}
 	}
 	
 	public void addParticle(final ParticleController controller){

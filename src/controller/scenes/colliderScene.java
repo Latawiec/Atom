@@ -59,7 +59,7 @@ public class colliderScene extends SceneTemplate {
         userControll = new UserController(controller.getUser());
         outputLabel.setOpacity(0);
         outputLabel.setTranslateY(-150);
-
+        getExcitedParticles();
         plusLabel.setText("+");
         plusLabel.setFont(Font.font("Helvetica", 40));
         plusLabel.setTranslateY(-425);
@@ -76,7 +76,6 @@ public class colliderScene extends SceneTemplate {
         container.getChildren().addAll(top, bottom);
         container.setAlignment(Pos.BOTTOM_CENTER);
         top.getChildren().add(chain);
-        userParticles = (List<ParticleController>) userControll.getParticlesArray().clone();
         pContainer = new ParticlesContainer(200, 200, userParticles);
         pContainer.disableElectrons();
         bottom.getChildren().add(pContainer);
@@ -95,7 +94,7 @@ public class colliderScene extends SceneTemplate {
                     case RIGHT:
                         pContainer.setSelectedParticle(pContainer.getSelectedParticle() + 1);
                         break;
-                    case ENTER:
+                    case UP:
                         if(pContainer.particlesCount()>0){
                             chooseParicle(userParticles.get(pContainer.getSelectedParticle()));
                             userParticles.remove(pContainer.getSelectedParticle());
@@ -105,6 +104,9 @@ public class colliderScene extends SceneTemplate {
                     case ESCAPE:
                         cancel();
                         break;
+                    case ENTER:
+                        commit();
+
                     case BACK_SPACE:
                         try {
                             userControll.saveParticles();
@@ -166,7 +168,7 @@ public class colliderScene extends SceneTemplate {
 
     public void cancel(){
         chosenParticles.clear();
-        userParticles = (List<ParticleController>) userControll.getParticlesArray().clone();
+        getExcitedParticles();
         bottom.getChildren().remove(pContainer);
         top.getChildren().remove(chain);
         pContainer = new ParticlesContainer(200, 200, userParticles);
@@ -178,5 +180,25 @@ public class colliderScene extends SceneTemplate {
         plusLabel.setOpacity(0);
     }
 
+    public void commit(){
+        if(chosenParticles.size()>0) {
+            for (ParticleController p : userParticles) {
+                userControll.getParticlesArray().remove(p);
+            }
+            userControll.getParticlesArray().add(chosenParticles.get(chosenParticles.size() - 1));
+            userControll.saveParticles();
+        }
+    }
+
+
+    public void getExcitedParticles(){
+        userParticles.clear();
+        List<ParticleController> temp = (List<ParticleController>) userControll.getParticlesArray().clone();
+        for(ParticleController p : temp){
+            if(p.isEnergized()){
+                userParticles.add(p);
+            }
+        }
+    }
 
 }

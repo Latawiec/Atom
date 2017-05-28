@@ -78,6 +78,7 @@ public class DatabaseAccessor {
         return queryBuilder.query();
     }
 
+
     private void usersCreator() throws SQLException {
         daoUsers.createOrUpdate(new UserDB("Latawiec", "1", 0));
 
