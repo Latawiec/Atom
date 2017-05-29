@@ -1,5 +1,6 @@
 package controller.scenes;
 
+import UI.circleButton;
 import controller.ScenesController;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
@@ -33,7 +34,7 @@ public class loginScene extends SceneTemplate {
     TextField usernameField;
     TextField passwordField;
     Label outputLabel;
-    Button loginButton;
+    circleButton loginButton;
 
     public loginScene(ScenesController controller) {
         super(controller);
@@ -42,16 +43,13 @@ public class loginScene extends SceneTemplate {
         usernameField = new TextField();
         passwordField = new PasswordField();
         outputLabel = new Label();
-        loginButton = new Button("Log in");
-        loginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        loginButton = new circleButton("Log in", 10, true);
+        loginButton.setOnMousePressed(e->{
                 try {
                     tryLogIn(usernameField.getText(), passwordField.getText());
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (SQLException b) {
+                    b.printStackTrace();
                 }
-            }
         });
         outputLabel.setTextFill(Color.CRIMSON);
         usernameField.setPromptText("username");
@@ -111,7 +109,7 @@ public class loginScene extends SceneTemplate {
             usernameField.setText("");
             passwordField.setText("");
             Timeline tl = new Timeline();
-            tl.getKeyFrames().add(new KeyFrame(Duration.ZERO, new KeyValue(outputLabel.opacityProperty(), 0)));
+            tl.getKeyFrames().add(new KeyFrame(Duration.ZERO, new KeyValue(outputLabel.opacityProperty(), 0 )));
             tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5f), new KeyValue(outputLabel.opacityProperty(), 1)));
             tl.play();
             outputLabel.setText("Incorrect password or username.");

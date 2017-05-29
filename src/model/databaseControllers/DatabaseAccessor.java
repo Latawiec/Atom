@@ -88,8 +88,9 @@ public class DatabaseAccessor {
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
 
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(14),10000 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(30),2000 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(2),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(14),1000000 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(30),200000 ));
         daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(18),11000 ));
     }
 

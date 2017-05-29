@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import UI.ValueBar;
+import UI.circleButton;
 import controller.ScenesController;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -66,19 +67,17 @@ public class mainScene extends SceneTemplate {
 		root.getChildren().add(background);
 		root.getChildren().add(particlesContainer);
 
-		/*-------------*/
-
-		Button TEST = new Button("Goto Collider");
-		TEST.setOnAction(e->{
+		circleButton colliderButton = new circleButton("collider", 15, false);
+		colliderButton.setOnMousePressed(e->{
 			try {
 				controller.setScene(ScenesController.Scenes.Collider);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		});
-		root.getChildren().add(TEST);
+		colliderButton.setTranslateY(300);
+		root.getChildren().add(colliderButton);
 
-		/*--------------*/
 		info = new ParticleInfoTag(70, 90);
 		
 		info.setTranslateX(getWidth()/8);
