@@ -18,7 +18,7 @@ public class ChainParticleView extends ParticleView {
 
     public ChainParticleView(ParticleController controller, ReadOnlyDoubleProperty widthProperty, ReadOnlyDoubleProperty heightProperty) {
         super(controller, widthProperty, heightProperty);
-        infoTag = new BasicInfoTag(controller.getNameTag(), controller.getProtons(), controller.getNeutrons());
+        infoTag = new BasicInfoTag(controller.getNameTag(), controller.getProtons(), controller.getNucleons());
         ellipse = new Ellipse();
         ellipse.setFill(Color.TRANSPARENT);
         ellipse.setStrokeWidth(2);

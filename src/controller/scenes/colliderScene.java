@@ -182,7 +182,7 @@ public class colliderScene extends SceneTemplate {
 
     public void commit(){
         if(chosenParticles.size()>0) {
-            for (ParticleController p : userParticles) {
+            for (ParticleController p : chosenParticles) {
                 userControll.getParticlesArray().remove(p);
             }
             userControll.getParticlesArray().add(chosenParticles.get(chosenParticles.size() - 1));

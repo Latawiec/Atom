@@ -45,12 +45,12 @@ public class BasicInfoTag extends BorderPane {
         nucleoidsNumbersContainer.setTranslateY(getHeight()/2 - 20);
         nucleoidsNumbersContainer.setSpacing(12);
 
-        massNumberText = new Text(0, getHeight()/2, Integer.toString(atomic));
+        massNumberText = new Text(0, getHeight()/2, Integer.toString(nucleons));
         massNumberText.setFill(Color.WHITE);
         massNumberText.setFont(Font.font("Helvetica", 10));
         massNumberText.setFontSmoothingType(FontSmoothingType.LCD);
 
-        atomicNumberText = new Text(0, getHeight()/2, Integer.toString(nucleons));
+        atomicNumberText = new Text(0, getHeight()/2, Integer.toString(atomic));
         atomicNumberText.setFill(Color.WHITE);
         atomicNumberText.setFont(Font.font("Helvetica", 10));
         atomicNumberText.setFontSmoothingType(FontSmoothingType.LCD);
