@@ -37,7 +37,7 @@ import java.util.Random;
  */
 public class colliderScene extends SceneTemplate {
 
-    private VBox container = new VBox();
+    private VBox Vcontainer = new VBox();
     private StackPane top = new StackPane();
     private StackPane bottom = new StackPane();
     Label outputLabel = new Label();
@@ -45,16 +45,13 @@ public class colliderScene extends SceneTemplate {
     Label plusLabel = new Label();
     private List<ParticleController> chosenParticles = new ArrayList<ParticleController>();
     private List<ParticleController> userParticles = new ArrayList<ParticleController>();
+    boolean isStable = false;
 
     private Chain chain = new Chain();
     private UserController userControll;
 
     public colliderScene(ScenesController controller) {
         super(controller);
-        Rectangle background = new Rectangle();
-        background.widthProperty().bind(widthProperty());
-        background.heightProperty().bind(heightProperty());
-        background.setFill(new Color(0.03, 0.03, 0.12, 1));
 
         userControll = new UserController(controller.getUser());
         outputLabel.setOpacity(0);
@@ -68,13 +65,8 @@ public class colliderScene extends SceneTemplate {
 
         bottom.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0.5f, 0, 0, 0))));
 
-        root.setEffect(new GaussianBlur(1.5f));
-
-        root.setAlignment(Pos.BOTTOM_CENTER);
-        root.getChildren().add(background);
-        root.getChildren().add(container);
-        container.getChildren().addAll(top, bottom);
-        container.setAlignment(Pos.BOTTOM_CENTER);
+        Vcontainer.getChildren().addAll(top, bottom);
+        Vcontainer.setAlignment(Pos.BOTTOM_CENTER);
         top.getChildren().add(chain);
         pContainer = new ParticlesContainer(200, 200, userParticles);
         pContainer.disableElectrons();
@@ -83,6 +75,8 @@ public class colliderScene extends SceneTemplate {
         bottom.getChildren().add(plusLabel);
         bottom.setMinHeight(250);
 
+        container.getChildren().add(Vcontainer);
+        root.setAlignment(container, Pos.BOTTOM_CENTER);
         setOnKeyPressed(new EventHandler<KeyEvent>(){
 
             @Override
@@ -152,6 +146,7 @@ public class colliderScene extends SceneTemplate {
                     outputLabel.setTextFill(Color.GREEN);
                     outputLabel.setText("Stable");
                     chain.getLastParticleView().setStable();
+                    isStable = true;
                 }else{
                     ParticleController temp = new ParticleController(new UserParticleDB(userControll.getSourceDB(), new ParticleDB(neutrons, protons, new int[]{0,0,0,0,0,0,0}), 0));
                     chosenParticles.add(temp);
@@ -159,6 +154,7 @@ public class colliderScene extends SceneTemplate {
                     outputLabel.setTextFill(Color.CRIMSON);
                     outputLabel.setText("Unstable");
                     chain.getLastParticleView().setUnstable();
+                    isStable = false;
                 }
 
             }
@@ -181,7 +177,7 @@ public class colliderScene extends SceneTemplate {
     }
 
     public void commit(){
-        if(chosenParticles.size()>0) {
+        if(chosenParticles.size()>0 && isStable) {
             for (ParticleController p : chosenParticles) {
                 userControll.getParticlesArray().remove(p);
             }

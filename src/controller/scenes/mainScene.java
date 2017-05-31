@@ -3,9 +3,11 @@ package controller.scenes;
 import java.io.IOException;
 import java.util.Random;
 
+import UI.NotificationPane;
 import UI.ValueBar;
 import UI.circleButton;
 import controller.ScenesController;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -46,7 +48,8 @@ public class mainScene extends SceneTemplate {
 			info.setName(particle.getName());
 			info.setMass(particle.getMass());
 			info.setBindingEnergy(particle.getBindingEnergy());
-			info.setEnergy(particle.getEnergy());
+			info.getEnergyProperty().unbind();
+			info.getEnergyProperty().bind(particle.getEnergyProperty());
 			info.setAtomicNumber(particle.getProtons());
 			info.setMassNumber(particle.getProtons() + particle.getNeutrons());
 			info.setEnergized(particle.isEnergized());
@@ -60,23 +63,19 @@ public class mainScene extends SceneTemplate {
 		userControll = new UserController(controller.getUser());
 
 		particlesContainer = new ParticlesContainer(getWidth(), getWidth(), userControll.getParticlesArray());
-		Rectangle background = new Rectangle();
-		background.widthProperty().bind(widthProperty());
-		background.heightProperty().bind(heightProperty());
-		background.setFill(new Color(0.03, 0.03, 0.12, 1));
-		root.getChildren().add(background);
-		root.getChildren().add(particlesContainer);
+		container.getChildren().add(particlesContainer);
 
 		circleButton colliderButton = new circleButton("collider", 15, false);
 		colliderButton.setOnMousePressed(e->{
 			try {
+				userControll.saveParticles();
 				controller.setScene(ScenesController.Scenes.Collider);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		});
 		colliderButton.setTranslateY(300);
-		root.getChildren().add(colliderButton);
+		container.getChildren().add(colliderButton);
 
 		info = new ParticleInfoTag(70, 90);
 		
@@ -91,16 +90,29 @@ public class mainScene extends SceneTemplate {
 		bar.setValue(50);
 		particlesContainer.getChildren().add(bar);
 		
-		GaussianBlur blur = new GaussianBlur(1.5f);
-		particlesContainer.setEffect(blur);
+		/*------------*/
+		
+		Timeline energyAdder = new Timeline();
+		energyAdder.getKeyFrames().add(new KeyFrame(Duration.seconds(1), null));
+		energyAdder.setOnFinished(e->{
+			for(ParticleController p : userControll.getParticlesArray()){
+				Timeline tl = new Timeline();
+				tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new KeyValue(p.getEnergyProperty(), p.getEnergy() + p.getBindingEnergy()*0.01f)));
+				tl.setOnFinished(et->{
+					p.setEnergy(p.getEnergy());					
+				});
+				tl.play();
+			}
+			energyAdder.play();
+		});
+		energyAdder.play();
+		/*------------*/
 		setSelectedParticle(0);
-		setOnKeyPressed(new EventHandler<KeyEvent>(){
+		setOnKeyPressed(e->{
 
-			@Override
-			public void handle(KeyEvent arg0) {
 				Random rand = new Random();
 				Timeline tl = new Timeline();
-				switch(arg0.getCode()){
+				switch(e.getCode()){
 				case LEFT:
 					setSelectedParticle(getSelectedParticle() - 1);
 					break;
@@ -108,16 +120,9 @@ public class mainScene extends SceneTemplate {
 					setSelectedParticle(getSelectedParticle() + 1);
 					break;
 				case SPACE:
-					tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5f), new KeyValue(blur.radiusProperty(), 20)));
-					tl.play();
-					break;
-				case A:
-					tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5f), new KeyValue(blur.radiusProperty(), 1.5f)));
-					tl.play();
+					popNotification(new NotificationPane());
 					break;
 				}
-			}
-
 		});
 	}
 }

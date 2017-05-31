@@ -86,6 +86,10 @@ public class ParticleController implements DatabaseSource{
         }
     }
 
+    public void updateEnergy(){
+    	getSourceDB().setEnergy(getEnergy());
+    }
+    
     @Override
     public void save() {
         try {

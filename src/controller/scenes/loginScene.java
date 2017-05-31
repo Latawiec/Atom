@@ -29,9 +29,7 @@ import java.sql.SQLException;
  */
 public class loginScene extends SceneTemplate {
 
-    StackPane container;
-
-    TextField usernameField;
+	TextField usernameField;
     TextField passwordField;
     Label outputLabel;
     circleButton loginButton;
@@ -39,7 +37,6 @@ public class loginScene extends SceneTemplate {
     public loginScene(ScenesController controller) {
         super(controller);
 
-        container = new StackPane();
         usernameField = new TextField();
         passwordField = new PasswordField();
         outputLabel = new Label();
@@ -65,12 +62,6 @@ public class loginScene extends SceneTemplate {
         FillTransition label = new FillTransition(Duration.seconds(2f), atomLabel, Color.TRANSPARENT, Color.WHITE);
         label.play();
 
-        Rectangle background = new Rectangle();
-        background.widthProperty().bind(widthProperty());
-        background.heightProperty().bind(heightProperty());
-        background.setFill(new Color(0.03, 0.03, 0.12, 1));
-
-        container.setEffect(new GaussianBlur(1.5f));
         VBox stack = new VBox();
         ParticleView view = new ParticleView(new ParticleController(new UserParticleDB(new UserDB(), new ParticleDB(6, 6, new int[]{2, 4, 0, 0, 0, 0, 0}), 1)), widthProperty(), heightProperty());
 
@@ -80,10 +71,9 @@ public class loginScene extends SceneTemplate {
         stack.setTranslateY(200);
         atomLabel.setTranslateY(50);
         creditsLabel.translateYProperty().bind(heightProperty().divide(2).add(-10));
-        container.getChildren().addAll(background, view, stack, atomLabel, creditsLabel);
+        container.getChildren().addAll(view, stack, atomLabel, creditsLabel);
         stack.getChildren().addAll(usernameField, passwordField, loginButton, outputLabel);
 
-        root.getChildren().add(container);
     }
 
     private void tryLogIn(String username, String password) throws SQLException {

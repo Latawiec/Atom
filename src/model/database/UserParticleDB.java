@@ -20,6 +20,7 @@ public class UserParticleDB {
     @DatabaseField(canBeNull = false)
     private float energy;
     public float getEnergy(){ return energy; }
+    public void setEnergy(float value){ energy = value; }
 
     @DatabaseField(canBeNull = false, foreign = true)
     UserDB owner;

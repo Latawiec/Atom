@@ -41,6 +41,7 @@ public class ParticleInfoTag extends BorderPane {
 		energy.set(value);
 	}
 	public float getEnergy(){ return energy.get(); }
+	public FloatProperty getEnergyProperty(){ return energy; }
 
 	public BooleanProperty energized = new SimpleBooleanProperty();
 	public void setEnergized(boolean value){ energized.set(value); }
