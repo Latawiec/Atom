@@ -5,25 +5,14 @@ import java.util.Random;
 
 import UI.NotificationPane;
 import UI.ValueBar;
-import UI.circleButton;
+import UI.CircleButton;
 import controller.ScenesController;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import model.Particle.ParticleModel;
-import model.Particle.UserdataModel;
-import model.database.UserDB;
 import model.databaseControllers.ParticleController;
 import model.databaseControllers.UserController;
 import obv.particle.ParticleInfoTag;
@@ -65,7 +54,7 @@ public class mainScene extends SceneTemplate {
 		particlesContainer = new ParticlesContainer(getWidth(), getWidth(), userControll.getParticlesArray());
 		container.getChildren().add(particlesContainer);
 
-		circleButton colliderButton = new circleButton("collider", 15, false);
+		CircleButton colliderButton = new CircleButton("collider", 15, false);
 		colliderButton.setOnMousePressed(e->{
 			try {
 				userControll.saveParticles();

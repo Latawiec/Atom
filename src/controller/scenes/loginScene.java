@@ -1,17 +1,14 @@
 package controller.scenes;
 
-import UI.circleButton;
+import UI.CircleButton;
 import controller.ScenesController;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.*;
 import javafx.util.Duration;
 import model.database.ParticleDB;
@@ -32,7 +29,7 @@ public class loginScene extends SceneTemplate {
 	TextField usernameField;
     TextField passwordField;
     Label outputLabel;
-    circleButton loginButton;
+    CircleButton loginButton;
 
     public loginScene(ScenesController controller) {
         super(controller);
@@ -40,7 +37,7 @@ public class loginScene extends SceneTemplate {
         usernameField = new TextField();
         passwordField = new PasswordField();
         outputLabel = new Label();
-        loginButton = new circleButton("Log in", 10, true);
+        loginButton = new CircleButton("Log in", 10, true);
         loginButton.setOnMousePressed(e->{
                 try {
                     tryLogIn(usernameField.getText(), passwordField.getText());

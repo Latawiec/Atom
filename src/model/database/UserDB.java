@@ -49,6 +49,10 @@ public class UserDB {
     @DatabaseField(dataType = DataType.DATE)
     private Date creationDate;
 
+    @DatabaseField
+    private boolean accountType;
+    public boolean getAccountType(){ return accountType; }
+
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private byte[] unlockedParticles = new byte[]{};
     public byte[] getUnlockedParticles(){ return unlockedParticles; }
@@ -61,6 +65,13 @@ public class UserDB {
         this.username = username;
         this.password = password;
         this.level = level;
+    }
+
+    public UserDB(String username, String password, int level, boolean type) throws SQLException {
+        this.username = username;
+        this.password = password;
+        this.level = level;
+        this.accountType = true;
     }
 
     public UserDB(){

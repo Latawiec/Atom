@@ -14,7 +14,7 @@ import javafx.util.Duration;
 /**
  * Created by Latawiec on 28/05/2017.
  */
-public class circleButton extends StackPane {
+public class CircleButton extends StackPane {
 
 
     Text label = new Text();
@@ -24,7 +24,7 @@ public class circleButton extends StackPane {
     private Timeline hideLabel = new Timeline();
     private int direction = 1;
 
-    public circleButton(String text, double buttonSize, boolean dir){
+    public CircleButton(String text, double buttonSize, boolean dir){
         super();
 
         if(dir){

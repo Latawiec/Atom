@@ -1,5 +1,6 @@
 package controller;
 
+import controller.scenes.admin.adminMainScene;
 import controller.scenes.colliderScene;
 import controller.scenes.loginScene;
 import controller.scenes.mainScene;
@@ -51,7 +52,11 @@ public class ScenesController {
                 changeScene(new loginScene(this));
                 break;
             case Main:
-                changeScene(new mainScene(this));
+                if(user.getAccountType()){
+                    changeScene(new adminMainScene(this));
+                }else{
+                    changeScene(new mainScene(this));
+                }
                 break;
             case Collider:
                 changeScene(new colliderScene(this));

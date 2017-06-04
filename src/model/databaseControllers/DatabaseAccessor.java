@@ -78,25 +78,33 @@ public class DatabaseAccessor {
         return queryBuilder.query();
     }
 
+    public void createUser(String username, String password) throws SQLException {
+        daoUsers.createOrUpdate(new UserDB(username, password, 0));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser(username, password), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser(username, password), daoParticles.queryForId(1),100 ));
+    }
+
 
     private void usersCreator() throws SQLException {
+        daoUsers.createOrUpdate(new UserDB("admin", "admin", 0, true));
+
         daoUsers.createOrUpdate(new UserDB("Latawiec", "1", 0));
 
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(1),100 ));
 
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(2),100 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(14),1000000 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(30),200000 ));
-        daoUserParticles.createOrUpdate(new UserParticleDB( daoUsers.queryForId(1), daoParticles.queryForId(18),11000 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(2),100 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(14),1000000 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(30),200000 ));
+        daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(18),11000 ));
     }
 
     public void deleteUserParticles(UserDB user) throws SQLException {
