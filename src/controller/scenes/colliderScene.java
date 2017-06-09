@@ -2,6 +2,7 @@ package controller.scenes;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Particle;
 import controller.ScenesController;
+import javafx.animation.FillTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -68,7 +69,7 @@ public class colliderScene extends SceneTemplate {
         Vcontainer.getChildren().addAll(top, bottom);
         Vcontainer.setAlignment(Pos.BOTTOM_CENTER);
         top.getChildren().add(chain);
-        pContainer = new ParticlesContainer(200, 200, userParticles);
+        pContainer = new ParticlesContainer(getWidth(), 200, userParticles);
         pContainer.disableElectrons();
         bottom.getChildren().add(pContainer);
         bottom.getChildren().add(outputLabel);
@@ -100,7 +101,7 @@ public class colliderScene extends SceneTemplate {
                         break;
                     case ENTER:
                         commit();
-
+                        break;
                     case BACK_SPACE:
                         try {
                             userControll.saveParticles();
@@ -183,9 +184,31 @@ public class colliderScene extends SceneTemplate {
             }
             userControll.getParticlesArray().add(chosenParticles.get(chosenParticles.size() - 1));
             userControll.saveParticles();
+        }else{
+            animateBackgroundFlash(new Color(0.53, 0.03, 0.12, 1));
         }
     }
 
+
+    private void animateBackgroundFlash(Color color){
+        Color current = new Color(0.03, 0.03, 0.12, 1);
+        FillTransition start = new FillTransition();
+        start.setToValue(color);
+        start.setShape(background);
+        start.setFromValue(current);
+        start.setDuration(Duration.seconds(0.2f));
+
+        FillTransition end = new FillTransition();
+        end.setToValue(current);
+        end.setShape(background);
+        end.setFromValue(color);
+        end.setDuration(Duration.seconds(0.8f));
+
+        start.setOnFinished(e->{
+            end.play();
+        });
+        start.play();
+    }
 
     public void getExcitedParticles(){
         userParticles.clear();

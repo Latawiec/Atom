@@ -64,7 +64,7 @@ public class mainScene extends SceneTemplate {
 		particlesContainer = new ParticlesContainer(getWidth(), getWidth(), userControll.getParticlesArray());
 		//verticalStack.setAlignment(Pos.CENTER);
 
-		/*CircleButton colliderButton = new CircleButton("collider", 15, false);
+		CircleButton colliderButton = new CircleButton("collider", 15, false);
 		colliderButton.setOnMousePressed(e->{
 			try {
 				userControll.saveParticles();
@@ -74,14 +74,14 @@ public class mainScene extends SceneTemplate {
 			}
 		});
 		colliderButton.setTranslateY(300);
-		container.getChildren().add(colliderButton);*/
+		container.getChildren().add(colliderButton);
 
 		info = new ParticleInfoTag(70, 90);
 
 		LabeledValue energyLabel = new LabeledValue("Energy");
 		energyLabel.getValueProperty().bind(userControll.getEnergyProperty().asString());
 
-		verticalStack.getChildren().addAll(info, energyLabel, particlesContainer);
+		verticalStack.getChildren().addAll(info, particlesContainer, energyLabel);
 		/*------------*/
 		
 		Timeline energyAdder = new Timeline();

@@ -24,7 +24,7 @@ public abstract class SceneTemplate extends Scene {
     protected ScenesController controller;
     protected StackPane root;
     protected StackPane container;
-    private Rectangle background = new Rectangle();
+    protected Rectangle background = new Rectangle();
     
     private GaussianBlur blur = new GaussianBlur(0f);
     

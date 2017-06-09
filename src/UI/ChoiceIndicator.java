@@ -23,12 +23,11 @@ public class ChoiceIndicator extends StackPane {
 		
 		public Indicator(Color color){
 			super();
-			setSmooth(true);
-			container.setSpacing(5);
+			this.setSmooth(true);
 			this.color = color;
-			setFill(new Color(color.getRed(), color.getGreen(), color.getBlue(), disabledOpacity));
-			setRadiusX(3);
-			setRadiusY(3);
+			this.setFill(new Color(color.getRed(), color.getGreen(), color.getBlue(), disabledOpacity));
+			this.setRadiusX(3);
+			this.setRadiusY(3);
 		}
 		
 		public void animateOpacity(double seconds, double to){
@@ -53,7 +52,8 @@ public class ChoiceIndicator extends StackPane {
 		super();
 		getChildren().add(container);
 		setAlignment(Pos.CENTER);
-		container.setBackground(new Background(new BackgroundFill(new Color(1,0,0,1), null, null)));
+		container.setSpacing(5);
+		container.setAlignment(Pos.CENTER);
 	}
 	
 	public void addElements(int number){
@@ -66,7 +66,7 @@ public class ChoiceIndicator extends StackPane {
 	public void removeElements(int[] values){
 		elementsCount -= values.length;
 		for(int val : values){
-			getChildren().remove(indicators.get(val));
+			container.getChildren().remove(indicators.get(val));
 			indicators.remove(val);
 		}
 	}
