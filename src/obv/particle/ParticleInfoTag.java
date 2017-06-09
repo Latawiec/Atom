@@ -86,7 +86,10 @@ public class ParticleInfoTag extends BorderPane {
 		super();
 		setWidth(width);
 		setHeight(height);
-		
+
+		setMinHeight(getHeight());
+		setMinWidth(getWidth());
+
 		verticalInfoContainer = new VBox();
 		verticalInfoContainer.setAlignment(Pos.CENTER);
 		verticalInfoContainer.setTranslateX(getWidth()/2);

@@ -90,6 +90,8 @@ public class ParticleView extends StackPane {
 		getChildren().add(scene);
 		setWidth(scene.getWidth());
 		setHeight(scene.getHeight());
+		setMinHeight(getHeight());
+		setMinWidth(getWidth());
 		//Setting bindings
 		nucleons.bind(neutrons.add(protons));		//? Does this even work?
 		nucleons.bind(protons.add(neutrons));

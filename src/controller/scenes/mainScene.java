@@ -3,15 +3,23 @@ package controller.scenes;
 import java.io.IOException;
 import java.util.Random;
 
+import UI.LabeledValue;
 import UI.NotificationPane;
 import UI.ValueBar;
 import UI.CircleButton;
+import com.sun.javafx.css.CalculatedValue;
 import controller.ScenesController;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.NodeOrientation;
+import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.databaseControllers.ParticleController;
 import model.databaseControllers.UserController;
@@ -22,7 +30,7 @@ public class mainScene extends SceneTemplate {
 
 	UserController userControll;
 	ParticlesContainer particlesContainer;
-	
+	VBox verticalStack = new VBox();
 	ParticleInfoTag info;
 		
 	private IntegerProperty selectedParticle = new SimpleIntegerProperty();
@@ -50,11 +58,13 @@ public class mainScene extends SceneTemplate {
 		super(controller);
 
 		userControll = new UserController(controller.getUser());
+		container.getChildren().add(verticalStack);
+		//container.setBackground(new Background(new BackgroundFill(new Color(0,0,1,1), null, null)));
 
 		particlesContainer = new ParticlesContainer(getWidth(), getWidth(), userControll.getParticlesArray());
-		container.getChildren().add(particlesContainer);
+		//verticalStack.setAlignment(Pos.CENTER);
 
-		CircleButton colliderButton = new CircleButton("collider", 15, false);
+		/*CircleButton colliderButton = new CircleButton("collider", 15, false);
 		colliderButton.setOnMousePressed(e->{
 			try {
 				userControll.saveParticles();
@@ -64,21 +74,14 @@ public class mainScene extends SceneTemplate {
 			}
 		});
 		colliderButton.setTranslateY(300);
-		container.getChildren().add(colliderButton);
+		container.getChildren().add(colliderButton);*/
 
 		info = new ParticleInfoTag(70, 90);
-		
-		info.setTranslateX(getWidth()/8);
-		info.setTranslateY(getHeight()/20);
-		particlesContainer.getChildren().add(info);
-				
-		ValueBar bar = new ValueBar(150, 5);
-		bar.setTranslateX(250);
-		bar.setTranslateY(50);
-		bar.setMaxValue(100);
-		bar.setValue(50);
-		particlesContainer.getChildren().add(bar);
-		
+
+		LabeledValue energyLabel = new LabeledValue("Energy");
+		energyLabel.getValueProperty().bind(userControll.getEnergyProperty().asString());
+
+		verticalStack.getChildren().addAll(info, energyLabel, particlesContainer);
 		/*------------*/
 		
 		Timeline energyAdder = new Timeline();

@@ -2,6 +2,7 @@ package obv.particle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import UI.ChoiceIndicator;
 import javafx.animation.KeyFrame;
@@ -11,12 +12,14 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import model.databaseControllers.ParticleController;
 
-public class ParticlesContainer extends BorderPane {
-	
+public class ParticlesContainer extends VBox {
+
 	private List<ParticleController> particleControlls;
+	private BorderPane sliderViewer = new BorderPane();
 		
 	public IntegerProperty selectedParticle = new SimpleIntegerProperty();
 	public void setSelectedParticle(int newNumber){
@@ -30,7 +33,7 @@ public class ParticlesContainer extends BorderPane {
 					particleViews.get(oldNumber).setVisible(false);
 				}
 			});
-			tt.setToX(-newNumber*getWidth());
+			tt.setToX(-newNumber*sliderViewer.getWidth());
 			indicator.selectElement(getSelectedParticle());
 			tt.play();
 		}
@@ -47,7 +50,7 @@ public class ParticlesContainer extends BorderPane {
 					particleViews.get(oldNumber).setVisible(false);
 				}
 			});
-			tt.setToX(-newNumber*getWidth());
+			tt.setToX(-newNumber*sliderViewer.getWidth());
 			indicator.selectElement(getSelectedParticle());
 			tt.play();
 		}
@@ -64,17 +67,24 @@ public class ParticlesContainer extends BorderPane {
 		super();
 
 		particleControlls = controlls;
-		prefHeight(height);
-		prefWidth(width);
+
 		setWidth(width);
 		setHeight(height);
-		getChildren().add(slider);
+		setMinWidth(width);
+		setMinHeight(height);
+
+		sliderViewer.setMinHeight(height);
+		sliderViewer.setMinWidth(width);
+		sliderViewer.setMaxHeight(height);
+		sliderViewer.setMaxWidth(width);
+
+		sliderViewer.getChildren().add(slider);
+		getChildren().add(sliderViewer);
 		getChildren().add(indicator);
 		setSelectedParticle(0);
-		indicator.setAlignment(Pos.TOP_CENTER);
-		indicator.translateXProperty().bind(widthProperty().divide(2));
-		indicator.setTranslateY(height);
-		
+
+		setAlignment(Pos.CENTER);
+
 		for(final ParticleController c : controlls){
 			addParticle(c);
 		}

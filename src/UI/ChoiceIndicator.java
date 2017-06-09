@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.animation.FillTransition;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
-public class ChoiceIndicator extends HBox {
+public class ChoiceIndicator extends StackPane {
+
+	private HBox container = new HBox();
 
 	public class Indicator extends Ellipse{
 		
@@ -21,7 +24,7 @@ public class ChoiceIndicator extends HBox {
 		public Indicator(Color color){
 			super();
 			setSmooth(true);
-			setSpacing(5);
+			container.setSpacing(5);
 			this.color = color;
 			setFill(new Color(color.getRed(), color.getGreen(), color.getBlue(), disabledOpacity));
 			setRadiusX(3);
@@ -48,13 +51,16 @@ public class ChoiceIndicator extends HBox {
 	
 	public ChoiceIndicator(){
 		super();
+		getChildren().add(container);
+		setAlignment(Pos.CENTER);
+		container.setBackground(new Background(new BackgroundFill(new Color(1,0,0,1), null, null)));
 	}
 	
 	public void addElements(int number){
 		elementsCount += number;
 		Indicator indic = new Indicator(Color.WHITE);
 		indicators.add(indic);
-		getChildren().add(indic);
+		container.getChildren().add(indic);
 	}
 	
 	public void removeElements(int[] values){
