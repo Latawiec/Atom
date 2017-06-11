@@ -80,6 +80,7 @@ public class mainScene extends SceneTemplate {
 
 		LabeledValue energyLabel = new LabeledValue("Energy");
 		energyLabel.getValueProperty().bind(userControll.getEnergyProperty().asString());
+		energyLabel.translateXProperty().bind(widthProperty().divide(2));
 
 		verticalStack.getChildren().addAll(info, particlesContainer, energyLabel);
 		/*------------*/

@@ -23,9 +23,9 @@ public class UserdataModel {
 	public List<ParticleModel> getParticles() { return particles; }
 	public void setParticles(List<ParticleModel> particles) { this.particles = particles; }
 
-
 	public String getUsername() { return username.get(); }
 	public void setUsername(String value) { username.set(value); }
 	
 	public int getParticlesCount() { return particles.size(); }
+
 }

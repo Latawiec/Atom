@@ -1,11 +1,14 @@
 package controller.scenes;
 
+import UI.LabeledValue;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Particle;
 import controller.ScenesController;
 import javafx.animation.FillTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -38,6 +41,8 @@ import java.util.Random;
  */
 public class colliderScene extends SceneTemplate {
 
+    private FloatProperty energyIncomeProperty = new SimpleFloatProperty(0);
+    private LabeledValue energyIncome = new LabeledValue("Energy income");
     private VBox Vcontainer = new VBox();
     private StackPane top = new StackPane();
     private StackPane bottom = new StackPane();
@@ -54,6 +59,8 @@ public class colliderScene extends SceneTemplate {
     public colliderScene(ScenesController controller) {
         super(controller);
 
+        energyIncome.getValueProperty().bind(energyIncomeProperty.asString());
+        energyIncome.translateXProperty().bind(widthProperty().divide(5));
         userControll = new UserController(controller.getUser());
         outputLabel.setOpacity(0);
         outputLabel.setTranslateY(-150);
@@ -74,6 +81,7 @@ public class colliderScene extends SceneTemplate {
         bottom.getChildren().add(pContainer);
         bottom.getChildren().add(outputLabel);
         bottom.getChildren().add(plusLabel);
+        bottom.getChildren().add(energyIncome);
         bottom.setMinHeight(250);
 
         container.getChildren().add(Vcontainer);
@@ -101,10 +109,11 @@ public class colliderScene extends SceneTemplate {
                         break;
                     case ENTER:
                         commit();
+                        cancel();
                         break;
                     case BACK_SPACE:
                         try {
-                            userControll.saveParticles();
+                            userControll.save();
                             controller.setScene(ScenesController.Scenes.Main);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -135,13 +144,14 @@ public class colliderScene extends SceneTemplate {
                 neutrons += chosenParticles.get(chosenParticles.size()-2).getNeutrons();
 
                 List<ParticleDB> possibleParticles = null;
+                ParticleController temp;
                 try {
                     possibleParticles = DatabaseAccessor.getInstance().getParticlesWithNucleonsNumber(nucleons);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 if(possibleParticles.size() == 1){
-                    ParticleController temp = new ParticleController(new UserParticleDB(userControll.getSourceDB(), possibleParticles.get(0), 0));
+                    temp = new ParticleController(new UserParticleDB(userControll.getSourceDB(), possibleParticles.get(0), 0));
                     chosenParticles.add(temp);
                     chain.addParticle(temp);
                     outputLabel.setTextFill(Color.GREEN);
@@ -149,7 +159,7 @@ public class colliderScene extends SceneTemplate {
                     chain.getLastParticleView().setStable();
                     isStable = true;
                 }else{
-                    ParticleController temp = new ParticleController(new UserParticleDB(userControll.getSourceDB(), new ParticleDB(neutrons, protons, new int[]{0,0,0,0,0,0,0}), 0));
+                    temp = new ParticleController(new UserParticleDB(userControll.getSourceDB(), new ParticleDB(neutrons, protons, new int[]{0,0,0,0,0,0,0}), 0));
                     chosenParticles.add(temp);
                     chain.addParticle(temp);
                     outputLabel.setTextFill(Color.CRIMSON);
@@ -157,7 +167,7 @@ public class colliderScene extends SceneTemplate {
                     chain.getLastParticleView().setUnstable();
                     isStable = false;
                 }
-
+                energyIncomeProperty.set( temp.getBindingEnergy() - energyIncomeProperty.getValue() );
             }
         }
 
@@ -175,6 +185,7 @@ public class colliderScene extends SceneTemplate {
         bottom.getChildren().add(pContainer);
         outputLabel.setOpacity(0);
         plusLabel.setOpacity(0);
+        energyIncomeProperty.set(0);
     }
 
     public void commit(){
@@ -182,8 +193,13 @@ public class colliderScene extends SceneTemplate {
             for (ParticleController p : chosenParticles) {
                 userControll.getParticlesArray().remove(p);
             }
-            userControll.getParticlesArray().add(chosenParticles.get(chosenParticles.size() - 1));
+            ParticleController addedParticle = chosenParticles.get(chosenParticles.size() - 1);
+            userControll.getParticlesArray().add(addedParticle);
             userControll.saveParticles();
+            animateBackgroundFlash(new Color(0.03, 0.53, 0.12, 1));
+            userControll.unlockParticle((byte)addedParticle.getProtons());
+
+            userControll.setEnergy( userControll.getEnergy() + energyIncomeProperty.get() );
         }else{
             animateBackgroundFlash(new Color(0.53, 0.03, 0.12, 1));
         }

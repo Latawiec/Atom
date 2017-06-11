@@ -39,7 +39,16 @@ public class UserController implements DatabaseSource {
     public IntegerProperty getLevelProperty(){ return level; }
 
     private ArrayList<Byte> unlockedParticles;
-    public void unlockParticle(byte number){ unlockedParticles.add(number); }
+    public void unlockParticle(byte number){
+        boolean contains = false;
+        for(Byte val : unlockedParticles) {
+            if(val == number){
+                contains = true;
+                return;
+            }
+        }
+        unlockedParticles.add(number);
+    }
 
     private ArrayList<ParticleController> particles;
     public ParticleController getParticle(int index){ return particles.get(index); }
@@ -57,6 +66,13 @@ public class UserController implements DatabaseSource {
         unlockedParticles = new ArrayList<Byte>();
         particles = new ArrayList<ParticleController>();
         loadParticles();
+        loadUnlockedParticles();
+    }
+
+    private void loadUnlockedParticles(){
+        for(byte val : sourceDB.getUnlockedParticles()){
+            unlockedParticles.add(val);
+        }
     }
 
     private void loadParticles(){
@@ -71,9 +87,25 @@ public class UserController implements DatabaseSource {
         }
     }
 
+    private byte[] unlockedParticlesToArray(){
+        byte[] result = new byte[unlockedParticles.size()];
+        for(int i=0; i< unlockedParticles.size(); i++){
+            result[i] = unlockedParticles.get(i);
+        }
+        return result;
+    }
+
     @Override
     public void save() {
-
+        sourceDB.setEnergy(getEnergy());
+        sourceDB.setLevel(getLevel());
+        sourceDB.setUnlockedParticles(unlockedParticlesToArray());
+        saveParticles();
+        try {
+            DatabaseAccessor.getInstance().Save(sourceDB);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveParticles(){
@@ -84,4 +116,6 @@ public class UserController implements DatabaseSource {
             e.printStackTrace();
         }
     }
+
+
 }
