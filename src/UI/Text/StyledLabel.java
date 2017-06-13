@@ -6,6 +6,8 @@ import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import javax.swing.text.Style;
+
 /**
  * Created by Latawiec on 09/06/2017.
  */
@@ -20,5 +22,14 @@ public class StyledLabel extends Text {
         setFill(Color.WHITE);
         setFontSize(size, weight);
         setFontSmoothingType(FontSmoothingType.LCD);
+    }
+
+    public StyledLabel(double size, FontWeight weight, Color color){
+        this(size, weight);
+        setColor(color);
+    }
+
+    public void setColor(Color color){
+        setFill(color);
     }
 }

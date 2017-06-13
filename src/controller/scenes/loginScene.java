@@ -37,7 +37,7 @@ public class loginScene extends SceneTemplate {
         usernameField = new TextField();
         passwordField = new PasswordField();
         outputLabel = new Label();
-        loginButton = new CircleButton("Log in", 10, true);
+        loginButton = new CircleButton("Log in", 10, true, true);
         loginButton.setOnMousePressed(e->{
                 try {
                     tryLogIn(usernameField.getText(), passwordField.getText());

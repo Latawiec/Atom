@@ -22,6 +22,18 @@ public class BasicInfoTag extends BorderPane {
     private VBox verticalInfoContainer;
     private VBox nucleoidsNumbersContainer;
 
+    public void setTag(String tag){
+        nameTagText.setText(tag);
+    }
+
+    public void setMassNumber(int number){
+        massNumberText.setText(String.valueOf(number));
+    }
+
+    public void setAtomicNumber(int number){
+        atomicNumberText.setText(String.valueOf(number));
+    }
+
     public BasicInfoTag(String nameTag, int atomic, int nucleons){
         verticalInfoContainer = new VBox();
         verticalInfoContainer.setAlignment(Pos.CENTER);

@@ -24,7 +24,7 @@ public class CircleButton extends StackPane {
     private Timeline hideLabel = new Timeline();
     private int direction = 1;
 
-    public CircleButton(String text, double buttonSize, boolean dir){
+    public CircleButton(String text, double buttonSize, boolean dir, boolean axis){
         super();
 
         if(dir){
@@ -53,6 +53,7 @@ public class CircleButton extends StackPane {
 
 
         label.setPickOnBounds(false);
+        label.setMouseTransparent(true);
         label.setFill(Color.WHITE);
         label.setText(text.toUpperCase());
         label.setFont(Font.font("Helvetica", FontWeight.EXTRA_LIGHT, buttonSize));
@@ -69,14 +70,22 @@ public class CircleButton extends StackPane {
 
         float duration = 0.3f;
         showLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.opacityProperty(), 1, Interpolator.EASE_OUT)));
-        showLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.translateXProperty(), direction*label.getLayoutBounds().getWidth(), Interpolator.EASE_OUT)));
+        if(axis){
+            showLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.translateXProperty(), direction*label.getLayoutBounds().getWidth(), Interpolator.EASE_OUT)));
+        }else{
+            showLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.translateYProperty(), direction*label.getLayoutBounds().getHeight()*1.5f, Interpolator.EASE_OUT)));
+        }
 
         showLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(backEllipse.scaleXProperty(), 1.3f, Interpolator.EASE_OUT)));
         showLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(backEllipse.scaleYProperty(), 1.3f, Interpolator.EASE_OUT)));
         showLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(backEllipse.opacityProperty(), 0.5f, Interpolator.EASE_OUT)));
 
         hideLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.opacityProperty(), 0, Interpolator.EASE_IN)));
-        hideLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.translateXProperty(), direction*label.getLayoutBounds().getWidth()*0.3f, Interpolator.EASE_IN)));
+        if(axis){
+            hideLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.translateXProperty(), direction*label.getLayoutBounds().getWidth()*0.3f, Interpolator.EASE_IN)));
+        }else{
+            hideLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(label.translateYProperty(), direction*label.getLayoutBounds().getHeight()*0.3f, Interpolator.EASE_IN)));
+        }
 
         hideLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(backEllipse.scaleXProperty(), 0.9f, Interpolator.EASE_OUT)));
         hideLabel.getKeyFrames().add(new KeyFrame(Duration.seconds(duration), new KeyValue(backEllipse.scaleYProperty(), 0.9f, Interpolator.EASE_OUT)));

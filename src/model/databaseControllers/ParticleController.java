@@ -1,7 +1,10 @@
 package model.databaseControllers;
 
 import javafx.beans.property.*;
+import model.database.ParticleDB;
+import model.database.UserDB;
 import model.database.UserParticleDB;
+import obv.particle.ParticlesContainer;
 
 import java.sql.SQLException;
 
@@ -70,6 +73,20 @@ public class ParticleController implements DatabaseSource{
     public float getMass(){ return mass.get(); }
     public void setMass(float value){ mass.set(value);}
     public FloatProperty getMassProperty(){ return mass; }
+
+    public ParticleController(ParticleDB db){
+        this.sourceDB = null;
+        setProtons(db.getProtons());
+        setNeutrons(db.getNeutrons());
+        setName(db.getName());
+        setNameTag(db.getNameTag());
+        setEnergized(false);
+        setBindingEnergy(db.getBindingEnergy());
+        setMass(db.getMass());
+        for(int i=0; i<7; i++){
+            electrons[i] = new SimpleIntegerProperty(db.getElectrons()[i]);
+        }
+    }
 
     public ParticleController(UserParticleDB db){
         this.sourceDB = db;

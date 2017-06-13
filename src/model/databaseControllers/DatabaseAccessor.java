@@ -10,9 +10,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Particle;
 import javafx.scene.control.Tab;
-import model.database.ParticleDB;
-import model.database.UserDB;
-import model.database.UserParticleDB;
+import model.database.*;
 
 import javax.management.Query;
 import java.sql.SQLException;
@@ -32,6 +30,8 @@ public class DatabaseAccessor {
     private static Dao<ParticleDB, Integer> daoParticles;
     private static Dao<UserDB, Integer> daoUsers;
     private static Dao<UserParticleDB, Integer> daoUserParticles;
+    private static Dao<ActionDB, Integer> daoActions;
+    private static Dao<ExchangePositionDB, Integer> daoExchangePositions;
 
     protected DatabaseAccessor() throws SQLException {
         source = new JdbcConnectionSource(databaseURL);
@@ -39,13 +39,19 @@ public class DatabaseAccessor {
         TableUtils.createTableIfNotExists(source, ParticleDB.class);
         TableUtils.createTableIfNotExists(source, UserDB.class);
         TableUtils.createTableIfNotExists(source, UserParticleDB.class);
+        TableUtils.createTableIfNotExists(source, ActionDB.class);
+        TableUtils.createTableIfNotExists(source, ExchangePositionDB.class);
 
         daoParticles = DaoManager.createDao(source, ParticleDB.class);
         daoUsers = DaoManager.createDao(source, UserDB.class);
         daoUserParticles = DaoManager.createDao(source, UserParticleDB.class);
+        daoActions = DaoManager.createDao(source, ActionDB.class);
+        daoExchangePositions = DaoManager.createDao(source, ExchangePositionDB.class);
 
         //particlesCreator();
+        //exchangePositionsCreator();
         //usersCreator();
+        //actionsCreator();
     }
 
     public static DatabaseAccessor getInstance() throws SQLException {
@@ -66,6 +72,11 @@ public class DatabaseAccessor {
     public static void Save(UserParticleDB ob) throws SQLException {
         daoUserParticles.createOrUpdate(ob);
     }
+
+    public static void Save(ActionDB ob) throws SQLException {
+        daoActions.createOrUpdate(ob);
+    }
+
     public UserDB getUser(String username, String password) throws SQLException {
         QueryBuilder<UserDB, ?> queryBuilder = daoUsers.queryBuilder();
         queryBuilder.where().eq("username", username).and().eq("password", password);
@@ -84,6 +95,19 @@ public class DatabaseAccessor {
         daoUserParticles.createOrUpdate(new UserParticleDB( getUser(username, password), daoParticles.queryForId(1),100 ));
     }
 
+    public void createAction(String name, float cost, float income) throws SQLException {
+        daoActions.createOrUpdate(new ActionDB(name, cost, income));
+    }
+
+    public List<ActionDB> getActions() throws SQLException{
+        QueryBuilder<ActionDB, ?> queryBuilder = daoActions.queryBuilder();
+        return queryBuilder.query();
+    }
+
+    public List<ExchangePositionDB> getExchangePositions() throws  SQLException {
+        QueryBuilder<ExchangePositionDB, ?> queryBuilder = daoExchangePositions.queryBuilder();
+        return queryBuilder.query();
+    }
 
     private void usersCreator() throws SQLException {
         daoUsers.createOrUpdate(new UserDB("admin", "admin", 0, true));
@@ -107,10 +131,32 @@ public class DatabaseAccessor {
         daoUserParticles.createOrUpdate(new UserParticleDB( getUser("Latawiec", "1"), daoParticles.queryForId(18),11000 ));
     }
 
+    private void actionsCreator() throws SQLException{
+        daoActions.createOrUpdate(new ActionDB("Gamma", 15000, 12000));
+        daoActions.createOrUpdate(new ActionDB("Beta", 7000, 4000));
+        daoActions.createOrUpdate(new ActionDB("Alpha", 2000, 1000));
+    }
+
+    private void exchangePositionsCreator() throws  SQLException{
+        daoExchangePositions.createOrUpdate(new ExchangePositionDB(getParticle(1), 1000));
+        daoExchangePositions.createOrUpdate(new ExchangePositionDB(getParticle(2), 3000));
+        daoExchangePositions.createOrUpdate(new ExchangePositionDB(getParticle(3), 5000));
+    }
+
+    public void deleteAction(ActionDB ob) throws SQLException {
+        DeleteBuilder<ActionDB, Integer> deleteBuilder = daoActions.deleteBuilder();
+        deleteBuilder.where().eq("id", ob.getId());
+        deleteBuilder.delete();
+    }
+
     public void deleteUserParticles(UserDB user) throws SQLException {
         DeleteBuilder<UserParticleDB, Integer> deleteBuilder = daoUserParticles.deleteBuilder();
         deleteBuilder.where().eq("owner_id", user.getID());
         deleteBuilder.delete();
+    }
+
+    public void deleteUserParticle(UserParticleDB particle) throws SQLException {
+        daoUserParticles.delete(particle);
     }
 
     public void updateUserParticles(ArrayList<ParticleController> particles) throws SQLException {
@@ -118,6 +164,12 @@ public class DatabaseAccessor {
         	p.updateEnergy();
             daoUserParticles.createOrUpdate(p.getSourceDB());
         }
+    }
+
+    public ParticleDB getParticle(int id) throws  SQLException{
+        QueryBuilder<ParticleDB, ?> queryBuilder = daoParticles.queryBuilder();
+        queryBuilder.where().eq("id", id);
+        return queryBuilder.queryForFirst();
     }
 
     public List<ParticleDB> getParticlesWithNucleonsNumber (int nucleons) throws SQLException {

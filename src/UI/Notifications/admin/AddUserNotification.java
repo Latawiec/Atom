@@ -18,7 +18,7 @@ public class AddUserNotification extends NotificationPane {
     TextField passwordField = new TextField();
     VBox mainContainer = new VBox();
 
-    CircleButton addUserButton = new CircleButton("Create", 15, true);
+    CircleButton addUserButton = new CircleButton("Create", 15, true, true);
     public AddUserNotification(){
         super();
         usernameField.setPromptText("username");
